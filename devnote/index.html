@@ -1,0 +1,2851 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HIGH-LOG 제품팀 개발노트</title>
+  <style>
+    :root {
+      --primary: #5A5CF5;
+      --primary-light: #E8E8FD;
+      --primary-dark: #4648C4;
+      --success: #22C55E;
+      --success-light: #DCFCE7;
+      --warning: #F59E0B;
+      --warning-light: #FEF3C7;
+      --danger: #EF4444;
+      --danger-light: #FEE2E2;
+      --info: #3B82F6;
+      --info-light: #DBEAFE;
+      --gray-50: #F9FAFB;
+      --gray-100: #F3F4F6;
+      --gray-200: #E5E7EB;
+      --gray-300: #D1D5DB;
+      --gray-400: #9CA3AF;
+      --gray-500: #6B7280;
+      --gray-600: #4B5563;
+      --gray-700: #374151;
+      --gray-800: #1F2937;
+      --gray-900: #111827;
+      --radius: 12px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif;
+      background: var(--gray-50);
+      color: var(--gray-800);
+      line-height: 1.6;
+    }
+
+    /* Header */
+    .header {
+      background: white;
+      border-bottom: 1px solid var(--gray-200);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 0 0;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--primary);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 16px;
+    }
+
+    .logo-text {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--gray-900);
+    }
+
+    .logo-text span {
+      color: var(--gray-400);
+      font-weight: 400;
+      font-size: 14px;
+      margin-left: 8px;
+    }
+
+    .header-meta {
+      font-size: 13px;
+      color: var(--gray-400);
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      padding-top: 12px;
+    }
+
+    .tabs::-webkit-scrollbar { display: none; }
+
+    .tab {
+      padding: 10px 18px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--gray-500);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      transition: all 0.2s;
+      user-select: none;
+    }
+
+    .tab:hover { color: var(--gray-700); }
+    .tab.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+      font-weight: 600;
+    }
+
+    /* Main content */
+    .main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 28px 24px 60px;
+    }
+
+    .section { display: none; }
+    .section.active { display: block; }
+
+    .section-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: 6px;
+    }
+
+    .section-desc {
+      font-size: 14px;
+      color: var(--gray-500);
+      margin-bottom: 24px;
+    }
+
+    /* Cards */
+    .card {
+      background: white;
+      border-radius: var(--radius);
+      border: 1px solid var(--gray-200);
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--gray-800);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+    }
+
+    /* Stats Row */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: var(--radius);
+      border: 1px solid var(--gray-200);
+      padding: 20px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .stat-number {
+      font-size: 32px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--gray-500);
+      margin-top: 4px;
+    }
+
+    /* Progress Bar */
+    .progress-container {
+      margin-bottom: 24px;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .progress-header span {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 12px;
+      background: var(--gray-100);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 6px;
+      background: linear-gradient(90deg, var(--primary), #818CF8);
+      transition: width 0.6s ease;
+    }
+
+    /* Task List */
+    .task-group {
+      margin-bottom: 24px;
+    }
+
+    .task-group-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--gray-700);
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .task-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--gray-50);
+      font-size: 14px;
+    }
+
+    .task-item:last-child { border-bottom: none; }
+
+    .task-status {
+      flex-shrink: 0;
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      margin-top: 1px;
+    }
+
+    .task-status.done { background: var(--success-light); color: var(--success); }
+    .task-status.progress { background: var(--warning-light); color: var(--warning); }
+    .task-status.todo { background: var(--gray-100); color: var(--gray-400); }
+    .task-status.blocked { background: var(--danger-light); color: var(--danger); }
+
+    .task-content { flex: 1; }
+    .task-name { color: var(--gray-800); }
+    .task-note {
+      font-size: 12px;
+      color: var(--gray-400);
+      margin-top: 2px;
+    }
+
+    .task-badge {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .badge-done { background: var(--success-light); color: #16A34A; }
+    .badge-progress { background: var(--warning-light); color: #D97706; }
+    .badge-todo { background: var(--gray-100); color: var(--gray-500); }
+    .badge-blocked { background: var(--danger-light); color: #DC2626; }
+
+    /* QA Checklist */
+    .qa-category {
+      margin-bottom: 20px;
+    }
+
+    .qa-category-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: var(--gray-50);
+      border-radius: 8px;
+      cursor: pointer;
+      margin-bottom: 8px;
+    }
+
+    .qa-category-header:hover { background: var(--gray-100); }
+
+    .qa-category-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .qa-count {
+      font-size: 12px;
+      color: var(--gray-500);
+    }
+
+    .qa-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 16px;
+      font-size: 13px;
+    }
+
+    .qa-check {
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      border: 2px solid var(--gray-300);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.15s;
+    }
+
+    .qa-check.checked {
+      background: var(--success);
+      border-color: var(--success);
+      color: white;
+    }
+
+    /* Code Block */
+    .code-block {
+      background: var(--gray-900);
+      color: #E5E7EB;
+      padding: 16px 20px;
+      border-radius: 8px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      overflow-x: auto;
+      margin: 12px 0;
+      position: relative;
+    }
+
+    .code-block .comment { color: #6B7280; }
+    .code-block .cmd { color: #A78BFA; }
+    .code-block .string { color: #34D399; }
+
+    .copy-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--gray-700);
+      color: var(--gray-300);
+      border: none;
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 11px;
+      cursor: pointer;
+    }
+
+    .copy-btn:hover { background: var(--gray-600); }
+
+    /* Guide Steps */
+    .step {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .step-number {
+      width: 32px;
+      height: 32px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .step-content {
+      flex: 1;
+    }
+
+    .step-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--gray-800);
+      margin-bottom: 6px;
+    }
+
+    .step-desc {
+      font-size: 13px;
+      color: var(--gray-500);
+      margin-bottom: 8px;
+    }
+
+    /* Table */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .data-table th {
+      text-align: left;
+      padding: 10px 12px;
+      background: var(--gray-50);
+      border-bottom: 1px solid var(--gray-200);
+      font-weight: 600;
+      color: var(--gray-600);
+      font-size: 12px;
+    }
+
+    .data-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--gray-100);
+      color: var(--gray-700);
+    }
+
+    .data-table tr:last-child td { border-bottom: none; }
+
+    .data-table code {
+      background: var(--gray-100);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 12px;
+    }
+
+    /* Resource Links */
+    .resource-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+    }
+
+    .resource-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border: 1px solid var(--gray-200);
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--gray-700);
+      transition: all 0.15s;
+      cursor: pointer;
+    }
+
+    .resource-item:hover {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .resource-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .resource-info { flex: 1; }
+    .resource-name { font-size: 14px; font-weight: 600; }
+    .resource-url { font-size: 12px; color: var(--gray-400); margin-top: 2px; }
+
+    /* Timeline */
+    .timeline {
+      display: flex;
+      gap: 0;
+      margin: 20px 0;
+    }
+
+    .timeline-item {
+      flex: 1;
+      text-align: center;
+      position: relative;
+      padding: 16px 12px;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      top: 24px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--gray-200);
+    }
+
+    .timeline-item.done::before { background: var(--success); }
+    .timeline-item.current::before { background: linear-gradient(90deg, var(--primary), var(--gray-200)); }
+
+    .timeline-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--gray-300);
+      margin: 0 auto 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .timeline-item.done .timeline-dot { background: var(--success); }
+    .timeline-item.current .timeline-dot {
+      background: var(--primary);
+      box-shadow: 0 0 0 4px var(--primary-light);
+    }
+
+    .timeline-label {
+      font-size: 12px;
+      color: var(--gray-500);
+      font-weight: 500;
+    }
+
+    .timeline-item.current .timeline-label { color: var(--primary); font-weight: 600; }
+    .timeline-item.done .timeline-label { color: var(--success); }
+
+    /* Inquiry Form */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gray-700);
+      margin-bottom: 6px;
+    }
+
+    .form-input, .form-textarea, .form-select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--gray-200);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--gray-800);
+      background: white;
+      transition: border-color 0.15s;
+    }
+
+    .form-input:focus, .form-textarea:focus, .form-select:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+
+    .form-textarea { min-height: 100px; resize: vertical; }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover { background: var(--primary-dark); }
+
+    /* Inquiry list */
+    .inquiry-item {
+      border: 1px solid var(--gray-200);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 10px;
+    }
+
+    .inquiry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .inquiry-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .inquiry-meta {
+      font-size: 12px;
+      color: var(--gray-400);
+      display: flex;
+      gap: 8px;
+    }
+
+    .inquiry-body {
+      font-size: 13px;
+      color: var(--gray-600);
+    }
+
+    /* Alerts */
+    .alert {
+      padding: 14px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      margin-bottom: 16px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .alert-info { background: var(--info-light); color: #1D4ED8; }
+    .alert-warning { background: var(--warning-light); color: #92400E; }
+    .alert-success { background: var(--success-light); color: #166534; }
+
+    /* Env table */
+    .env-table {
+      width: 100%;
+      font-size: 13px;
+      border-collapse: collapse;
+    }
+
+    .env-table td {
+      padding: 6px 0;
+      vertical-align: top;
+    }
+
+    .env-table td:first-child {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      color: var(--primary);
+      font-weight: 500;
+      width: 260px;
+    }
+
+    /* Tag */
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-weight: 500;
+    }
+
+    .tag-blue { background: var(--info-light); color: #2563EB; }
+    .tag-green { background: var(--success-light); color: #16A34A; }
+    .tag-purple { background: var(--primary-light); color: var(--primary); }
+    .tag-orange { background: var(--warning-light); color: #D97706; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .card-grid { grid-template-columns: 1fr; }
+      .resource-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .timeline { flex-direction: column; }
+      .timeline-item::before { display: none; }
+      .tab { padding: 10px 14px; font-size: 13px; }
+    }
+
+    /* Collapsible */
+    .collapsible-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .collapsible-content.open {
+      max-height: 2000px;
+    }
+
+    .chevron {
+      transition: transform 0.2s;
+      font-size: 12px;
+    }
+
+    .chevron.open { transform: rotate(90deg); }
+
+    /* Architecture */
+    .arch-box {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .arch-arrow {
+      text-align: center;
+      color: var(--gray-400);
+      font-size: 20px;
+      padding: 4px 0;
+    }
+
+    .update-badge {
+      font-size: 11px;
+      background: var(--primary-light);
+      color: var(--primary);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+
+    /* Design tab extras */
+    .persona-card {
+      display: flex;
+      gap: 16px;
+      padding: 18px;
+      border: 1px solid var(--gray-200);
+      border-radius: 10px;
+      margin-bottom: 12px;
+    }
+    .persona-avatar {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; flex-shrink: 0;
+    }
+    .persona-info h4 { font-size: 15px; font-weight: 600; }
+    .persona-info p { font-size: 13px; color: var(--gray-500); margin-top: 2px; }
+    .persona-tags { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+
+    .screen-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .screen-card {
+      border: 1px solid var(--gray-200);
+      border-radius: 10px;
+      overflow: hidden;
+      transition: all 0.15s;
+    }
+    .screen-card:hover { border-color: var(--primary); box-shadow: var(--shadow-md); }
+    .screen-thumb {
+      height: 140px;
+      background: linear-gradient(135deg, var(--gray-100), var(--gray-200));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 40px;
+    }
+    .screen-info { padding: 12px; }
+    .screen-info h4 { font-size: 13px; font-weight: 600; }
+    .screen-info p { font-size: 11px; color: var(--gray-400); margin-top: 2px; }
+
+    .decision-item {
+      display: flex; gap: 14px; padding: 16px 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .decision-item:last-child { border-bottom: none; }
+    .decision-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .decision-content h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .decision-content p { font-size: 13px; color: var(--gray-500); }
+    .decision-result {
+      font-size: 12px; color: var(--primary); font-weight: 500;
+      margin-top: 6px; padding: 4px 10px;
+      background: var(--primary-light); border-radius: 6px;
+      display: inline-block;
+    }
+
+    .flow-steps {
+      display: flex; gap: 0; align-items: center; flex-wrap: wrap;
+      margin: 16px 0;
+    }
+    .flow-step {
+      background: white; border: 1px solid var(--gray-200);
+      border-radius: 8px; padding: 10px 16px;
+      font-size: 13px; font-weight: 500; text-align: center;
+      min-width: 100px;
+    }
+    .flow-arrow { color: var(--gray-400); font-size: 18px; padding: 0 4px; }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 12px;
+    }
+    .metric-card {
+      background: var(--gray-50);
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+    }
+    .metric-card .metric-value {
+      font-size: 28px; font-weight: 700; color: var(--primary);
+    }
+    .metric-card .metric-label {
+      font-size: 12px; color: var(--gray-500); margin-top: 4px;
+    }
+    .metric-card .metric-sub {
+      font-size: 11px; color: var(--gray-400); margin-top: 2px;
+    }
+
+    .color-row { display: flex; gap: 6px; align-items: center; margin-bottom: 8px; }
+    .color-swatch {
+      width: 32px; height: 32px; border-radius: 6px;
+      border: 1px solid rgba(0,0,0,0.08);
+    }
+    .color-label { font-size: 12px; color: var(--gray-600); }
+
+    .icon-showcase {
+      display: flex; flex-wrap: wrap; gap: 10px; padding: 12px 0;
+    }
+    .icon-item {
+      width: 48px; height: 48px;
+      background: var(--gray-50); border: 1px solid var(--gray-200);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-inner">
+    <div class="header-top">
+      <div class="logo">
+        <div class="logo-icon">H</div>
+        <div class="logo-text">HIGH-LOG <span>제품팀 개발노트 v1</span></div>
+      </div>
+      <div class="header-meta">
+        마지막 업데이트: <span id="lastUpdate">2026-04-16</span>
+      </div>
+    </div>
+    <div class="tabs" id="tabs">
+      <div class="tab" data-tab="planning">기획 & 디자인</div>
+      <div class="tab active" data-tab="dev">개발 현황</div>
+      <div class="tab" data-tab="qa">QA 현황</div>
+      <div class="tab" data-tab="guide">테스트 가이드</div>
+      <div class="tab" data-tab="architecture">아키텍처</div>
+      <div class="tab" data-tab="onboarding">온보딩 가이드</div>
+      <div class="tab" data-tab="resources">리소스 & 링크</div>
+      <div class="tab" data-tab="inquiry">문의사항</div>
+    </div>
+  </div>
+</div>
+
+<!-- Main Content -->
+<div class="main">
+
+  <!-- ====== 기획 & 디자인 ====== -->
+  <div class="section" id="section-planning">
+    <h1 class="section-title">기획 & 디자인</h1>
+    <p class="section-desc">HIGH-LOG 서비스의 기획 리서치, UX 설계, UI 디자인 전 과정을 기록합니다.</p>
+
+    <!-- 기획 진행률 -->
+    <div class="card">
+      <div class="progress-container">
+        <div class="progress-header">
+          <span>기획 & 디자인 진행률</span>
+          <span style="color: var(--success); font-weight: 700;">94%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 94%; background: linear-gradient(90deg, #22C55E, #4ADE80);"></div>
+        </div>
+      </div>
+      <div class="metric-grid">
+        <div class="metric-card">
+          <div class="metric-value">48</div>
+          <div class="metric-label">전체 기획 항목</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">45</div>
+          <div class="metric-label">완료</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">3</div>
+          <div class="metric-label">진행중</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">22</div>
+          <div class="metric-label">Figma 화면 수</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">67</div>
+          <div class="metric-label">디자인 에셋</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-value">3회</div>
+          <div class="metric-label">사용자 테스트</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 기획 타임라인 -->
+    <div class="card">
+      <div class="card-title">📅 기획 타임라인</div>
+      <div class="timeline">
+        <div class="timeline-item done">
+          <div class="timeline-dot"></div>
+          <div class="timeline-label">시장 조사</div>
+        </div>
+        <div class="timeline-item done">
+          <div class="timeline-dot"></div>
+          <div class="timeline-label">사용자 리서치</div>
+        </div>
+        <div class="timeline-item done">
+          <div class="timeline-dot"></div>
+          <div class="timeline-label">서비스 정의</div>
+        </div>
+        <div class="timeline-item done">
+          <div class="timeline-dot"></div>
+          <div class="timeline-label">IA & 와이어프레임</div>
+        </div>
+        <div class="timeline-item done">
+          <div class="timeline-dot"></div>
+          <div class="timeline-label">UI 디자인</div>
+        </div>
+        <div class="timeline-item done">
+          <div class="timeline-dot"></div>
+          <div class="timeline-label">디자인 시스템</div>
+        </div>
+        <div class="timeline-item done">
+          <div class="timeline-dot"></div>
+          <div class="timeline-label">프로토타입</div>
+        </div>
+        <div class="timeline-item current">
+          <div class="timeline-dot"></div>
+          <div class="timeline-label">UT & 개선</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 시장 조사 & 경쟁 분석 -->
+    <div class="card">
+      <div class="card-title">📊 시장 조사 & 경쟁 분석</div>
+      <div class="task-group">
+        <div class="task-group-title">시장 리서치</div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">대입 면접 시장 규모 및 트렌드 조사</div>
+            <div class="task-note">2025-2026 수시전형 면접 비중 증가 추세 확인</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">기존 면접 준비 서비스 벤치마킹 (5개 서비스)</div>
+            <div class="task-note">강점/약점 분석, 차별화 포인트 도출</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">AI 면접 솔루션 해외 사례 조사</div>
+            <div class="task-note">Interview Warmup(Google), Yoodli, Pramp 등 분석</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">타겟 시장 세분화 (TAM/SAM/SOM)</div>
+            <div class="task-note">수시 면접 대비 고3 + 재수생 약 35만명 추정</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+      </div>
+
+      <div class="task-group">
+        <div class="task-group-title">사용자 리서치</div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">고3 학생 심층 인터뷰 (12명)</div>
+            <div class="task-note">면접 준비 과정의 Pain Point 수집</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">입시 컨설턴트 전문가 인터뷰 (3명)</div>
+            <div class="task-note">면접 평가 기준, 합격생 패턴 인사이트</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">온라인 설문조사 (N=127)</div>
+            <div class="task-note">면접 준비 행태, 니즈, 지불 의향 조사</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">어피니티 다이어그램 & 인사이트 도출</div>
+            <div class="task-note">핵심 인사이트 8개, 기회 영역 4개 정리</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 페르소나 -->
+    <div class="card">
+      <div class="card-title">👤 사용자 페르소나</div>
+      <div class="persona-card">
+        <div class="persona-avatar" style="background: #DBEAFE;">🧑‍🎓</div>
+        <div class="persona-info">
+          <h4>김서연 (Primary) — 고3, 수시 지원 예정</h4>
+          <p>"생기부 기반으로 어떤 질문이 나올지 예측하고 싶어요. 학원 갈 시간도 부족한데 혼자 연습할 방법이 없어요."</p>
+          <div class="persona-tags">
+            <span class="tag tag-blue">시간 부족</span>
+            <span class="tag tag-purple">자기주도 학습</span>
+            <span class="tag tag-orange">피드백 갈증</span>
+            <span class="tag tag-green">모바일 선호</span>
+          </div>
+        </div>
+      </div>
+      <div class="persona-card">
+        <div class="persona-avatar" style="background: #FEF3C7;">👨‍🎓</div>
+        <div class="persona-info">
+          <h4>이준호 (Secondary) — 재수생, 교대 면접 준비</h4>
+          <p>"작년 면접에서 꼬리 질문에 당황했어요. 실전처럼 압박 면접을 연습하고 싶어요."</p>
+          <div class="persona-tags">
+            <span class="tag tag-blue">실전 시뮬레이션</span>
+            <span class="tag tag-purple">교직적성 면접</span>
+            <span class="tag tag-orange">꼬리 질문 대비</span>
+            <span class="tag tag-green">반복 연습</span>
+          </div>
+        </div>
+      </div>
+      <div class="persona-card">
+        <div class="persona-avatar" style="background: #DCFCE7;">👩‍🏫</div>
+        <div class="persona-info">
+          <h4>박미영 (Tertiary) — 고등학교 진학 담당 교사</h4>
+          <p>"30명 학생의 면접을 혼자 봐주기 어려워요. AI가 1차 연습을 도와주면 좋겠어요."</p>
+          <div class="persona-tags">
+            <span class="tag tag-blue">다인원 관리</span>
+            <span class="tag tag-purple">학생별 리포트</span>
+            <span class="tag tag-orange">시간 효율</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 서비스 정의 -->
+    <div class="card">
+      <div class="card-title">🎯 서비스 정의 & 핵심 가치</div>
+      <div class="alert alert-success" style="margin-bottom:16px;">
+        ✅ <strong>핵심 가치 제안:</strong> 생기부만 올리면 AI가 나만의 면접 질문을 만들고, 실전처럼 연습하고, 즉시 피드백 받는 — 언제 어디서나 가능한 AI 면접 코치
+      </div>
+      <div class="task-group">
+        <div class="task-group-title">서비스 기획</div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">서비스 비전 & 미션 정의</div>
+            <div class="task-note">"모든 수험생에게 공평한 면접 준비 기회를"</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">핵심 기능 우선순위 (MoSCoW)</div>
+            <div class="task-note">Must: 질문생성, 면접연습, 피드백 / Should: 음성, 통계 / Could: 그룹연습</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">사용자 시나리오 & 스토리 맵 작성</div>
+            <div class="task-note">핵심 Journey 4개, 엣지 케이스 12개 정의</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">비즈니스 모델 캔버스 (BMC) 작성</div>
+            <div class="task-note">가치 제안, 수익 모델(프리미엄), 핵심 자원 정의</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">KPI 지표 정의</div>
+            <div class="task-note">MAU, 질문생성 수, 연습 완료율, 재방문율, NPS</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">서비스 브랜딩 (네이밍, 슬로건, 톤앤매너)</div>
+            <div class="task-note">HIGH-LOG: "나의 면접, 한 단계 높이(HIGH) 기록하다(LOG)"</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 핵심 사용자 플로우 -->
+    <div class="card">
+      <div class="card-title">🔀 핵심 사용자 플로우</div>
+
+      <h4 style="font-size:14px; margin-bottom:8px; color:var(--gray-700);">플로우 1 — 질문 생성</h4>
+      <div class="flow-steps">
+        <div class="flow-step">회원가입</div><span class="flow-arrow">&rarr;</span>
+        <div class="flow-step">생기부 업로드</div><span class="flow-arrow">&rarr;</span>
+        <div class="flow-step">대학/학과 선택</div><span class="flow-arrow">&rarr;</span>
+        <div class="flow-step">AI 질문 생성</div><span class="flow-arrow">&rarr;</span>
+        <div class="flow-step">질문 확인/저장</div>
+      </div>
+
+      <h4 style="font-size:14px; margin:20px 0 8px; color:var(--gray-700);">플로우 2 — 면접 연습</h4>
+      <div class="flow-steps">
+        <div class="flow-step">질문 선택</div><span class="flow-arrow">&rarr;</span>
+        <div class="flow-step">연습 모드 선택</div><span class="flow-arrow">&rarr;</span>
+        <div class="flow-step">답변 입력/녹음</div><span class="flow-arrow">&rarr;</span>
+        <div class="flow-step">AI 피드백</div><span class="flow-arrow">&rarr;</span>
+        <div class="flow-step">점수/리포트</div>
+      </div>
+
+      <h4 style="font-size:14px; margin:20px 0 8px; color:var(--gray-700);">플로우 3 — 반복 학습</h4>
+      <div class="flow-steps">
+        <div class="flow-step">결과 확인</div><span class="flow-arrow">&rarr;</span>
+        <div class="flow-step">약점 분석</div><span class="flow-arrow">&rarr;</span>
+        <div class="flow-step">추천 질문</div><span class="flow-arrow">&rarr;</span>
+        <div class="flow-step">재연습</div><span class="flow-arrow">&rarr;</span>
+        <div class="flow-step">성장 추이</div>
+      </div>
+    </div>
+
+    <!-- IA / 정보 구조 -->
+    <div class="card">
+      <div class="card-title">🗺 정보 구조 (Information Architecture)</div>
+      <div class="task-group">
+        <div class="task-group-title">IA 설계</div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">사이트맵 v3 확정 (20+ 화면)</div>
+            <div class="task-note">홈 / 인증 / 생기부 / 질문 / 연습 / 결과 / 마이페이지 / 고객지원</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">네비게이션 구조 설계</div>
+            <div class="task-note">GNB 5개 메뉴, 서브메뉴 구성, 모바일 바텀시트</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">페이지별 콘텐츠 인벤토리 작성</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">라우팅 테이블 정의 (React Router v7)</div>
+            <div class="task-note">보호 라우트, 리다이렉트, 중첩 라우트 규칙</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 와이어프레임 & UI -->
+    <div class="card">
+      <div class="card-title">📐 와이어프레임 & UI 디자인</div>
+      <div class="task-group">
+        <div class="task-group-title">와이어프레임 (Lo-Fi)</div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">전체 화면 Lo-Fi 와이어프레임 (22개 화면)</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">주요 인터랙션 플로우 프로토타입 (Figma)</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">내부 리뷰 및 피드백 반영 (2차 수정)</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+      </div>
+
+      <div class="task-group">
+        <div class="task-group-title">UI 디자인 (Hi-Fi)</div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">랜딩 페이지 디자인</div>
+            <div class="task-note">Hooking / 차별점 / 기능소개 / CTA 섹션</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">회원가입 & 로그인 화면</div>
+            <div class="task-note">탭 전환 UI, 이메일 인증 플로우</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">생기부 업로드 & 관리 화면</div>
+            <div class="task-note">드래그앤드롭 업로드, 카드 리스트, 상세 모달</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">AI 질문 생성 & 결과 화면</div>
+            <div class="task-note">로딩 애니메이션, 카드 캐러셀, 필터 UI</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">면접 연습 화면 (텍스트/음성)</div>
+            <div class="task-note">채팅형 UI, 타이머, 녹음 인디케이터</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">면접 결과 & 피드백 화면</div>
+            <div class="task-note">레이더 차트, 항목별 점수, AI 코멘트</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">마이페이지 & 설정 화면</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">서비스 가이드 & 온보딩 화면</div>
+            <div class="task-note">일러스트 기반 단계별 안내</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">공지사항, FAQ, 이용약관 페이지</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 화면 목록 -->
+    <div class="card">
+      <div class="card-title">🖼 주요 화면 (Figma)</div>
+      <div class="screen-grid">
+        <div class="screen-card">
+          <div class="screen-thumb" style="background:linear-gradient(135deg,#5A5CF5,#818CF8);">🏠</div>
+          <div class="screen-info"><h4>랜딩 페이지</h4><p>Hooking + 서비스 소개 + CTA</p></div>
+        </div>
+        <div class="screen-card">
+          <div class="screen-thumb" style="background:linear-gradient(135deg,#3B82F6,#60A5FA);">🔐</div>
+          <div class="screen-info"><h4>로그인 / 회원가입</h4><p>탭 전환 + 이메일 인증</p></div>
+        </div>
+        <div class="screen-card">
+          <div class="screen-thumb" style="background:linear-gradient(135deg,#22C55E,#4ADE80);">📄</div>
+          <div class="screen-info"><h4>생기부 업로드</h4><p>드래그앤드롭 + 파일 관리</p></div>
+        </div>
+        <div class="screen-card">
+          <div class="screen-thumb" style="background:linear-gradient(135deg,#F59E0B,#FBBF24);">🤖</div>
+          <div class="screen-info"><h4>AI 질문 생성</h4><p>스트리밍 로딩 + 결과 카드</p></div>
+        </div>
+        <div class="screen-card">
+          <div class="screen-thumb" style="background:linear-gradient(135deg,#EF4444,#F87171);">🎤</div>
+          <div class="screen-info"><h4>면접 연습</h4><p>텍스트 채팅 + 음성 녹음</p></div>
+        </div>
+        <div class="screen-card">
+          <div class="screen-thumb" style="background:linear-gradient(135deg,#8B5CF6,#A78BFA);">📊</div>
+          <div class="screen-info"><h4>면접 결과</h4><p>레이더 차트 + AI 피드백</p></div>
+        </div>
+        <div class="screen-card">
+          <div class="screen-thumb" style="background:linear-gradient(135deg,#06B6D4,#22D3EE);">📋</div>
+          <div class="screen-info"><h4>질문 저장함</h4><p>즐겨찾기 + 필터 + 검색</p></div>
+        </div>
+        <div class="screen-card">
+          <div class="screen-thumb" style="background:linear-gradient(135deg,#EC4899,#F472B6);">👤</div>
+          <div class="screen-info"><h4>마이페이지</h4><p>계정 정보 + 연습 이력</p></div>
+        </div>
+        <div class="screen-card">
+          <div class="screen-thumb" style="background:linear-gradient(135deg,#14B8A6,#2DD4BF);">📖</div>
+          <div class="screen-info"><h4>서비스 가이드</h4><p>일러스트 단계별 안내</p></div>
+        </div>
+        <div class="screen-card">
+          <div class="screen-thumb" style="background:linear-gradient(135deg,#78716C,#A8A29E);">❓</div>
+          <div class="screen-info"><h4>FAQ / 공지사항</h4><p>아코디언 + 카테고리 필터</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 디자인 시스템 -->
+    <div class="card">
+      <div class="card-title">🎨 디자인 시스템</div>
+      <div class="task-group">
+        <div class="task-group-title">구축 항목</div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">컬러 팔레트 정의 (Primary, Secondary, GrayScale, Label)</div>
+            <div class="task-note">Primary #5A5CF5, Secondary 12단계, GrayScale 12단계, Label 9색</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">타이포그래피 스케일 (13레벨)</div>
+            <div class="task-note">Display, Heading(5), Body(9), Caption — weight 400~800</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">아이콘 라이브러리 (67개 SVG)</div>
+            <div class="task-note">검색, 네비게이션, 상태, 액션, 파일 등 카테고리별 정리</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">컴포넌트 라이브러리 (28개 컴포넌트)</div>
+            <div class="task-note">Button, Input, Card, Modal, Toast, Dropdown, Label, Filter 등</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">간격 & 레이아웃 그리드 시스템</div>
+            <div class="task-note">4px 기준, 최대 너비 1200px, 반응형 브레이크포인트</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">styled-components 테마 토큰화</div>
+            <div class="task-note">theme.ts에 전체 디자인 토큰 코드화</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+      </div>
+
+      <h4 style="font-size:14px; margin:16px 0 8px; color:var(--gray-700);">컬러 시스템</h4>
+      <div class="color-row"><div class="color-swatch" style="background:#5A5CF5;"></div><div class="color-label">Primary — #5A5CF5</div></div>
+      <div class="color-row"><div class="color-swatch" style="background:#EBF2FF;"></div><div class="color-swatch" style="background:#C8DCFF;"></div><div class="color-swatch" style="background:#6DA2F8;"></div><div class="color-swatch" style="background:#2E6EE5;"></div><div class="color-label">Secondary 100~800</div></div>
+      <div class="color-row"><div class="color-swatch" style="background:#F9FAFB;"></div><div class="color-swatch" style="background:#E5E7EB;"></div><div class="color-swatch" style="background:#9CA3AF;"></div><div class="color-swatch" style="background:#374151;"></div><div class="color-swatch" style="background:#111827;"></div><div class="color-label">GrayScale</div></div>
+      <div class="color-row"><div class="color-swatch" style="background:#F3F8FF;"></div><div class="color-swatch" style="background:#FFF8EB;"></div><div class="color-swatch" style="background:#EEFBF4;"></div><div class="color-swatch" style="background:#FFF0F0;"></div><div class="color-label">Label Colors</div></div>
+
+      <h4 style="font-size:14px; margin:16px 0 8px; color:var(--gray-700);">아이콘 샘플</h4>
+      <div class="icon-showcase">
+        <div class="icon-item">🔍</div><div class="icon-item">📎</div><div class="icon-item">⬆️</div>
+        <div class="icon-item">❤️</div><div class="icon-item">⭐</div><div class="icon-item">🔔</div>
+        <div class="icon-item">📊</div><div class="icon-item">⚙️</div><div class="icon-item">🏠</div>
+        <div class="icon-item">👤</div><div class="icon-item">📝</div><div class="icon-item">🎯</div>
+        <div class="icon-item">🔗</div><div class="icon-item">📁</div><div class="icon-item">✏️</div>
+        <div class="icon-item">🗑</div>
+      </div>
+    </div>
+
+    <!-- 기획 의사결정 -->
+    <div class="card">
+      <div class="card-title">💡 핵심 기획 의사결정 기록</div>
+      <div class="decision-item">
+        <div class="decision-icon" style="background:var(--primary-light);">1</div>
+        <div class="decision-content">
+          <h4>생기부 업로드 방식: 파일 업로드 vs 텍스트 붙여넣기</h4>
+          <p>텍스트 복사 시 서식/표 구조가 깨지는 문제 → 파일 업로드(Excel/PDF)가 데이터 정합성 우수</p>
+          <div class="decision-result">결정: 파일 업로드 방식 채택, 추후 텍스트 입력 보조 옵션 추가 검토</div>
+        </div>
+      </div>
+      <div class="decision-item">
+        <div class="decision-icon" style="background:var(--info-light);">2</div>
+        <div class="decision-content">
+          <h4>면접 연습 UI: 채팅형 vs 화상 면접형</h4>
+          <p>MVP 단계에서 화상은 기술 복잡도 높고, 사용자 진입 장벽 상승 → 채팅형 우선 출시</p>
+          <div class="decision-result">결정: 텍스트 채팅형 우선, 음성 모드 2차 출시, 화상은 v2 검토</div>
+        </div>
+      </div>
+      <div class="decision-item">
+        <div class="decision-icon" style="background:var(--warning-light);">3</div>
+        <div class="decision-content">
+          <h4>AI 모델: GPT-4 vs Claude</h4>
+          <p>한국어 생기부 분석 정확도 비교 테스트 진행 → Claude가 교육 도메인에서 더 안정적 성능</p>
+          <div class="decision-result">결정: Claude API 채택, 프롬프트 최적화로 비용 효율성 확보</div>
+        </div>
+      </div>
+      <div class="decision-item">
+        <div class="decision-icon" style="background:var(--success-light);">4</div>
+        <div class="decision-content">
+          <h4>질문 유형 분류: 단일 vs 다중 카테고리</h4>
+          <p>면접 유형별(종합/교과/학교자체) 차별화된 질문 생성이 사용자 만족도에 직결</p>
+          <div class="decision-result">결정: 3개 유형 × 3개 난이도 = 9가지 조합으로 질문 생성</div>
+        </div>
+      </div>
+      <div class="decision-item">
+        <div class="decision-icon" style="background:var(--danger-light);">5</div>
+        <div class="decision-content">
+          <h4>인증 방식: 소셜 로그인 vs 이메일 인증</h4>
+          <p>미성년자 대상 서비스라 소셜 로그인 동의 절차 복잡 → 이메일 인증으로 단순화</p>
+          <div class="decision-result">결정: 이메일 인증 코드 방식, 추후 카카오 로그인 추가 예정</div>
+        </div>
+      </div>
+      <div class="decision-item">
+        <div class="decision-icon" style="background:var(--primary-light);">6</div>
+        <div class="decision-content">
+          <h4>평가 기준: 범용 vs 면접 유형 특화</h4>
+          <p>교대 면접(교직적성), 일반 대학(전공적합성) 등 면접 유형마다 평가 기준이 다름</p>
+          <div class="decision-result">결정: 인성 + 전공적합성 + 교직적성 3축 평가, 유형별 가중치 차등 적용</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 사용성 테스트 -->
+    <div class="card">
+      <div class="card-title">🧪 사용성 테스트 (UT)</div>
+      <div class="task-group">
+        <div class="task-group-title">테스트 라운드</div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">UT 1차 — 와이어프레임 단계 (5명)</div>
+            <div class="task-note">네비게이션 혼란 3건, 용어 이해도 이슈 2건 → IA 수정 반영</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">UT 2차 — Hi-Fi 프로토타입 (8명)</div>
+            <div class="task-note">질문 생성 대기 UX 개선 요청 → 스트리밍 로딩 도입, 결과 카드 리디자인</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status progress">&#9679;</div>
+          <div class="task-content">
+            <div class="task-name">UT 3차 — 실 서비스 베타 (진행중)</div>
+            <div class="task-note">실제 생기부 데이터 기반 End-to-End 테스트</div>
+          </div>
+          <span class="task-badge badge-progress">진행중</span>
+        </div>
+      </div>
+
+      <div class="task-group" style="margin-top:16px;">
+        <div class="task-group-title">UT 주요 발견 & 반영 사항</div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">"질문 생성이 오래 걸려서 떠났다" → 스트리밍 UI 도입</div>
+          </div>
+          <span class="tag tag-green">반영 완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">"어떤 질문부터 연습해야 할지 모르겠다" → 난이도 라벨 추가</div>
+          </div>
+          <span class="tag tag-green">반영 완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">"피드백이 너무 추상적" → 평가 항목 세분화 기획</div>
+          </div>
+          <span class="tag tag-orange">AI 엔진 v2에 반영 예정</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">"좋았던 질문을 저장하고 싶다" → 즐겨찾기 기능 추가</div>
+          </div>
+          <span class="tag tag-green">반영 완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">"모바일에서 사용하고 싶다" → 반응형 레이아웃 적용</div>
+          </div>
+          <span class="tag tag-green">반영 완료</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 문서 산출물 -->
+    <div class="card">
+      <div class="card-title">📑 기획 산출물 목록</div>
+      <table class="data-table">
+        <thead>
+          <tr><th>문서명</th><th>형식</th><th>상태</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>시장 조사 보고서</td><td>Notion</td><td><span class="tag tag-green">완료</span></td></tr>
+          <tr><td>사용자 인터뷰 종합 분석</td><td>Notion</td><td><span class="tag tag-green">완료</span></td></tr>
+          <tr><td>페르소나 & 시나리오</td><td>Figma / Notion</td><td><span class="tag tag-green">완료</span></td></tr>
+          <tr><td>서비스 정의서 (PRD)</td><td>Notion</td><td><span class="tag tag-green">완료</span></td></tr>
+          <tr><td>비즈니스 모델 캔버스</td><td>Figma</td><td><span class="tag tag-green">완료</span></td></tr>
+          <tr><td>사이트맵 v3</td><td>Figma</td><td><span class="tag tag-green">완료</span></td></tr>
+          <tr><td>와이어프레임 (22화면)</td><td>Figma</td><td><span class="tag tag-green">완료</span></td></tr>
+          <tr><td>Hi-Fi UI 디자인 (22화면)</td><td>Figma</td><td><span class="tag tag-green">완료</span></td></tr>
+          <tr><td>디자인 시스템 가이드</td><td>Figma / docs/</td><td><span class="tag tag-green">완료</span></td></tr>
+          <tr><td>프로토타입 (인터랙션)</td><td>Figma</td><td><span class="tag tag-green">완료</span></td></tr>
+          <tr><td>컴포넌트 명세서</td><td>docs/components.md</td><td><span class="tag tag-green">완료</span></td></tr>
+          <tr><td>API 연동 명세서</td><td>docs/auth-and-api.md</td><td><span class="tag tag-green">완료</span></td></tr>
+          <tr><td>UT 1차 결과 보고서</td><td>Notion</td><td><span class="tag tag-green">완료</span></td></tr>
+          <tr><td>UT 2차 결과 보고서</td><td>Notion</td><td><span class="tag tag-green">완료</span></td></tr>
+          <tr><td>UT 3차 결과 보고서</td><td>Notion</td><td><span class="tag tag-orange">진행중</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ====== 개발 현황 ====== -->
+  <div class="section active" id="section-dev">
+    <h1 class="section-title">개발 진행 현황</h1>
+    <p class="section-desc">AI 대입 면접 준비 서비스 HIGH-LOG의 개발 진행 상황을 추적합니다.</p>
+
+    <!-- Progress -->
+    <div class="card">
+      <div class="progress-container">
+        <div class="progress-header">
+          <span>전체 진행률</span>
+          <span style="color: var(--primary); font-weight: 700;">53%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: 53%"></div>
+        </div>
+      </div>
+      <div class="stats-row" style="margin-bottom:0">
+        <div class="stat-card">
+          <div class="stat-number" style="color: var(--gray-800)">59</div>
+          <div class="stat-label">전체 작업</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" style="color: var(--success)">34</div>
+          <div class="stat-label">완료</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" style="color: var(--warning)">13</div>
+          <div class="stat-label">진행중</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" style="color: var(--gray-400)">12</div>
+          <div class="stat-label">미시작</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sprint Timeline -->
+    <div class="card">
+      <div class="card-title">📅 개발 마일스톤</div>
+      <div class="timeline">
+        <div class="timeline-item done">
+          <div class="timeline-dot"></div>
+          <div class="timeline-label">기획 & 디자인</div>
+        </div>
+        <div class="timeline-item done">
+          <div class="timeline-dot"></div>
+          <div class="timeline-label">프론트엔드 기본 구조</div>
+        </div>
+        <div class="timeline-item done">
+          <div class="timeline-dot"></div>
+          <div class="timeline-label">인증 & API 연동</div>
+        </div>
+        <div class="timeline-item current">
+          <div class="timeline-dot"></div>
+          <div class="timeline-label">핵심 기능 개발</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-label">AI 엔진 강화</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-label">QA & 버그 수정</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-label">정식 출시</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature Tasks -->
+    <div class="card">
+      <div class="card-title">🔐 인증 시스템</div>
+      <div class="task-group">
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">이메일 기반 회원가입 / 로그인</div>
+            <div class="task-note">이메일 인증코드 발송, 비밀번호 정책 적용</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">JWT 토큰 관리 (Access/Refresh)</div>
+            <div class="task-note">Access 1시간, Refresh 14일, 자동 갱신</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">로그인 유지 (keepLogin) 기능</div>
+            <div class="task-note">localStorage / sessionStorage 분기</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">보호된 라우트 (ProtectedRoute)</div>
+            <div class="task-note">비인증 사용자 접근 차단</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">비밀번호 찾기</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📄 생기부 관리</div>
+      <div class="task-group">
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">생기부 파일 업로드 (Excel/PDF)</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">생기부 상세 조회 UI</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">다건 생기부 목록 관리</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status progress">&#9679;</div>
+          <div class="task-content">
+            <div class="task-name">생기부 삭제 기능</div>
+          </div>
+          <span class="task-badge badge-progress">진행중</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🤖 AI 면접 질문 생성</div>
+      <div class="task-group">
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">생기부 기반 AI 질문 자동 생성</div>
+            <div class="task-note">종합 / 교과 / 학교자체 유형별 생성</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">질문 생성 로딩 UI (스트리밍)</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">질문 저장 / 즐겨찾기</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">난이도별 분류 (기본/심화/고급)</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status progress">&#9679;</div>
+          <div class="task-content">
+            <div class="task-name">수동 질문 입력 기능</div>
+          </div>
+          <span class="task-badge badge-progress">진행중</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🎤 면접 연습</div>
+      <div class="task-group">
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">텍스트 기반 면접 연습 모드</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status progress">&#9679;</div>
+          <div class="task-content">
+            <div class="task-name">음성 면접 연습 모드</div>
+            <div class="task-note">Web Speech API 연동</div>
+          </div>
+          <span class="task-badge badge-progress">진행중</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">AI 피드백 및 평가</div>
+            <div class="task-note">인성, 전공적합성, 교직적성 평가</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">연습 결과 저장 및 이력 조회</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status progress">&#9679;</div>
+          <div class="task-content">
+            <div class="task-name">면접 타이머 기능</div>
+          </div>
+          <span class="task-badge badge-progress">진행중</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="border: 1px solid var(--primary); border-left: 4px solid var(--primary);">
+      <div class="card-title">🧠 AI 엔진 대폭 강화 <span class="update-badge">UPCOMING</span></div>
+      <div class="alert alert-info" style="margin-bottom:16px;">
+        ℹ️ AI 면접 준비 핵심 엔진을 대폭 업그레이드합니다. 질문 생성 품질, 피드백 정확도, 응답 속도 모두 개선됩니다.
+      </div>
+      <div class="task-group">
+        <div class="task-group-title">질문 생성 엔진 고도화</div>
+        <div class="task-item">
+          <div class="task-status progress">&#9679;</div>
+          <div class="task-content">
+            <div class="task-name">프롬프트 엔지니어링 v2 적용</div>
+            <div class="task-note">생기부 분석 정확도 향상, 맥락 기반 질문 생성</div>
+          </div>
+          <span class="task-badge badge-progress">진행중</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status todo">-</div>
+          <div class="task-content">
+            <div class="task-name">대학별/학과별 맞춤 질문 생성</div>
+            <div class="task-note">대학 면접 유형 DB 구축 &rarr; 맞춤형 질문 출력</div>
+          </div>
+          <span class="task-badge badge-todo">예정</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status todo">-</div>
+          <div class="task-content">
+            <div class="task-name">꼬리 질문 자동 생성</div>
+            <div class="task-note">답변 기반 후속 질문 생성으로 실전 면접 시뮬레이션</div>
+          </div>
+          <span class="task-badge badge-todo">예정</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status todo">-</div>
+          <div class="task-content">
+            <div class="task-name">질문 난이도 자동 조절</div>
+            <div class="task-note">사용자 답변 수준에 따라 동적 난이도 조정</div>
+          </div>
+          <span class="task-badge badge-todo">예정</span>
+        </div>
+      </div>
+
+      <div class="task-group">
+        <div class="task-group-title">피드백 엔진 업그레이드</div>
+        <div class="task-item">
+          <div class="task-status progress">&#9679;</div>
+          <div class="task-content">
+            <div class="task-name">평가 기준 세분화</div>
+            <div class="task-note">인성/전공적합성/교직적성 → 세부 항목별 점수 + 코멘트</div>
+          </div>
+          <span class="task-badge badge-progress">진행중</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status todo">-</div>
+          <div class="task-content">
+            <div class="task-name">모범 답안 자동 생성</div>
+            <div class="task-note">사용자 답변 대비 모범 답안 비교 제공</div>
+          </div>
+          <span class="task-badge badge-todo">예정</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status todo">-</div>
+          <div class="task-content">
+            <div class="task-name">답변 개선 제안 (리라이트)</div>
+            <div class="task-note">핵심 키워드 누락, 논리 구조 개선점 구체적 제시</div>
+          </div>
+          <span class="task-badge badge-todo">예정</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status todo">-</div>
+          <div class="task-content">
+            <div class="task-name">누적 학습 분석 리포트</div>
+            <div class="task-note">연습 이력 기반 약점 분석 및 성장 추이 시각화</div>
+          </div>
+          <span class="task-badge badge-todo">예정</span>
+        </div>
+      </div>
+
+      <div class="task-group">
+        <div class="task-group-title">성능 & 인프라</div>
+        <div class="task-item">
+          <div class="task-status progress">&#9679;</div>
+          <div class="task-content">
+            <div class="task-name">AI 응답 스트리밍 최적화</div>
+            <div class="task-note">SSE 기반 실시간 스트리밍으로 체감 속도 개선</div>
+          </div>
+          <span class="task-badge badge-progress">진행중</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status todo">-</div>
+          <div class="task-content">
+            <div class="task-name">Claude API 모델 업그레이드</div>
+            <div class="task-note">최신 Claude 모델 적용 &rarr; 응답 품질 + 속도 향상</div>
+          </div>
+          <span class="task-badge badge-todo">예정</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status todo">-</div>
+          <div class="task-content">
+            <div class="task-name">질문/피드백 캐싱 시스템</div>
+            <div class="task-note">동일 생기부 반복 요청 시 캐시 활용으로 비용 절감</div>
+          </div>
+          <span class="task-badge badge-todo">예정</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status todo">-</div>
+          <div class="task-content">
+            <div class="task-name">음성 인식(STT) 정확도 개선</div>
+            <div class="task-note">면접 도메인 특화 STT 후처리 파이프라인</div>
+          </div>
+          <span class="task-badge badge-todo">예정</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">👤 마이페이지 & 기타</div>
+      <div class="task-group">
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">계정 정보 조회</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">회원 탈퇴</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">공지사항 / FAQ</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status done">&#10003;</div>
+          <div class="task-content">
+            <div class="task-name">이용약관 / 개인정보처리방침</div>
+          </div>
+          <span class="task-badge badge-done">완료</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status progress">&#9679;</div>
+          <div class="task-content">
+            <div class="task-name">랜딩 페이지 반응형 최적화</div>
+          </div>
+          <span class="task-badge badge-progress">진행중</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status todo">-</div>
+          <div class="task-content">
+            <div class="task-name">다크모드 지원</div>
+          </div>
+          <span class="task-badge badge-todo">미시작</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status todo">-</div>
+          <div class="task-content">
+            <div class="task-name">SEO 메타태그 최적화</div>
+          </div>
+          <span class="task-badge badge-todo">미시작</span>
+        </div>
+        <div class="task-item">
+          <div class="task-status todo">-</div>
+          <div class="task-content">
+            <div class="task-name">PWA 지원</div>
+          </div>
+          <span class="task-badge badge-todo">미시작</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== QA 현황 ====== -->
+  <div class="section" id="section-qa">
+    <h1 class="section-title">QA 현황</h1>
+    <p class="section-desc">기능별 QA 체크리스트와 테스트 진행 현황입니다.</p>
+
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-number" style="color: var(--gray-800)" id="qa-total">42</div>
+        <div class="stat-label">전체 항목</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" style="color: var(--success)" id="qa-passed">0</div>
+        <div class="stat-label">통과</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" style="color: var(--danger)" id="qa-failed">0</div>
+        <div class="stat-label">미통과</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" style="color: var(--primary)" id="qa-percent">0%</div>
+        <div class="stat-label">통과율</div>
+      </div>
+    </div>
+
+    <div class="card" id="qa-container">
+      <!-- QA items rendered by JS -->
+    </div>
+  </div>
+
+  <!-- ====== 테스트 가이드 ====== -->
+  <div class="section" id="section-guide">
+    <h1 class="section-title">테스트 가이드</h1>
+    <p class="section-desc">HIGH-LOG 서비스를 로컬에서 실행하고 테스트하는 방법입니다.</p>
+
+    <div class="card">
+      <div class="card-title">💻 로컬 개발 서버 실행</div>
+
+      <div class="step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <div class="step-title">저장소 클론</div>
+          <div class="code-block">
+            <span class="cmd">git clone</span> &lt;repository-url&gt;<br>
+            <span class="cmd">cd</span> highlog
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <div class="step-title">의존성 설치</div>
+          <div class="code-block">
+            <span class="cmd">npm install</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <div class="step-title">환경변수 설정</div>
+          <div class="step-desc">프로젝트 루트에 <code>.env</code> 파일을 생성합니다.</div>
+          <div class="code-block">
+            <span class="comment"># .env</span><br>
+            <span class="string">VITE_API_URL</span>=https://onedaypocket.shop
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <div class="step-title">개발 서버 시작</div>
+          <div class="code-block">
+            <span class="cmd">npm run dev</span><br>
+            <span class="comment"># http://localhost:5173 에서 확인</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🧪 주요 테스트 시나리오</div>
+
+      <div class="alert alert-info">
+        ℹ️ 테스트 전 회원가입이 필요합니다. 유효한 이메일로 가입 후 이메일 인증을 완료해주세요.
+      </div>
+
+      <div class="task-group">
+        <div class="task-group-title">회원가입 / 로그인</div>
+        <div class="task-item">
+          <div class="task-status todo">1</div>
+          <div class="task-content">
+            <div class="task-name">이메일 회원가입 &rarr; 인증코드 입력 &rarr; 가입완료</div>
+          </div>
+        </div>
+        <div class="task-item">
+          <div class="task-status todo">2</div>
+          <div class="task-content">
+            <div class="task-name">로그인 &rarr; "로그인 유지" 체크 &rarr; 브라우저 새로고침 후 세션 유지 확인</div>
+          </div>
+        </div>
+        <div class="task-item">
+          <div class="task-status todo">3</div>
+          <div class="task-content">
+            <div class="task-name">비밀번호 찾기 &rarr; 인증코드 &rarr; 새 비밀번호 설정</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="task-group">
+        <div class="task-group-title">생기부 업로드 & 질문 생성</div>
+        <div class="task-item">
+          <div class="task-status todo">4</div>
+          <div class="task-content">
+            <div class="task-name">생기부 파일 업로드 &rarr; 상세조회 &rarr; AI 질문 생성</div>
+          </div>
+        </div>
+        <div class="task-item">
+          <div class="task-status todo">5</div>
+          <div class="task-content">
+            <div class="task-name">생성된 질문 목록 확인 (종합/교과/학교자체 유형, 난이도별 필터)</div>
+          </div>
+        </div>
+        <div class="task-item">
+          <div class="task-status todo">6</div>
+          <div class="task-content">
+            <div class="task-name">질문 즐겨찾기 추가/제거</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="task-group">
+        <div class="task-group-title">면접 연습</div>
+        <div class="task-item">
+          <div class="task-status todo">7</div>
+          <div class="task-content">
+            <div class="task-name">텍스트 면접 연습 시작 &rarr; 답변 입력 &rarr; AI 피드백 확인</div>
+          </div>
+        </div>
+        <div class="task-item">
+          <div class="task-status todo">8</div>
+          <div class="task-content">
+            <div class="task-name">연습 결과 점수 확인 (인성/전공적합성/교직적성)</div>
+          </div>
+        </div>
+        <div class="task-item">
+          <div class="task-status todo">9</div>
+          <div class="task-content">
+            <div class="task-name">연습 이력 조회 및 이전 결과 확인</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">💬 피드백 제출</div>
+      <p style="font-size:14px; color:var(--gray-600); margin-bottom:12px;">
+        버그 리포트 및 기능 제안은 GitHub Issues를 통해 제출해주세요.
+      </p>
+      <a class="resource-item" style="display:inline-flex; width:auto;" onclick="return false;">
+        <div class="resource-icon" style="background:var(--gray-100);">🐙</div>
+        <div class="resource-info">
+          <div class="resource-name">GitHub Issues</div>
+          <div class="resource-url">버그 리포트 & 기능 제안</div>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ====== 아키텍처 ====== -->
+  <div class="section" id="section-architecture">
+    <h1 class="section-title">아키텍처</h1>
+    <p class="section-desc">HIGH-LOG 프론트엔드 아키텍처와 기술 스택입니다.</p>
+
+    <div class="card">
+      <div class="card-title">🛠 기술 스택</div>
+      <div class="card-grid">
+        <div>
+          <table class="data-table">
+            <tr><th colspan="2">프레임워크 & 빌드</th></tr>
+            <tr><td><code>React 19</code></td><td>UI 프레임워크</td></tr>
+            <tr><td><code>TypeScript 5.9</code></td><td>타입 안전성</td></tr>
+            <tr><td><code>Vite 7</code></td><td>빌드 도구 & 개발서버</td></tr>
+            <tr><td><code>React Router v7</code></td><td>클라이언트 라우팅</td></tr>
+          </table>
+        </div>
+        <div>
+          <table class="data-table">
+            <tr><th colspan="2">상태관리 & 스타일링</th></tr>
+            <tr><td><code>TanStack Query v5</code></td><td>서버 상태 관리</td></tr>
+            <tr><td><code>React Context</code></td><td>인증 상태 관리</td></tr>
+            <tr><td><code>styled-components</code></td><td>CSS-in-JS 스타일링</td></tr>
+            <tr><td><code>ESLint + Husky</code></td><td>코드 품질 관리</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📂 프로젝트 구조</div>
+      <div class="code-block">
+<span class="string">src/</span>
+├── <span class="cmd">api/</span>          <span class="comment"># API 클라이언트 & 엔드포인트별 모듈</span>
+│   ├── client.ts      <span class="comment"># 공통 HTTP 클라이언트 (토큰 자동주입, 401 핸들링)</span>
+│   ├── auth/          <span class="comment"># 인증 API (login, signup, refresh)</span>
+│   ├── record/        <span class="comment"># 생기부 관리 API</span>
+│   ├── question/      <span class="comment"># 질문 생성/조회 API</span>
+│   ├── interview/     <span class="comment"># 면접 연습 API</span>
+│   └── ...
+├── <span class="cmd">pages/</span>        <span class="comment"># 라우트 레벨 페이지 컴포넌트</span>
+│   ├── home/          <span class="comment"># 랜딩 페이지</span>
+│   ├── authPage/      <span class="comment"># 로그인/회원가입</span>
+│   ├── interviewQuestions/  <span class="comment"># 질문 생성/조회/저장</span>
+│   ├── interviewPractice/   <span class="comment"># 면접 연습 & 결과</span>
+│   ├── recordManagement/    <span class="comment"># 생기부 관리</span>
+│   └── ...
+├── <span class="cmd">features/</span>     <span class="comment"># 기능별 UI 컴포넌트 (로직 포함)</span>
+├── <span class="cmd">components/</span>   <span class="comment"># 재사용 UI 컴포넌트 (28개)</span>
+│   ├── button/        <span class="comment"># DefaultButton, UnderBarButton</span>
+│   ├── input/         <span class="comment"># DefaultInput, DropDown, CheckBox</span>
+│   ├── card/          <span class="comment"># RecordCard, QuestionCard</span>
+│   ├── modal/         <span class="comment"># Modal (confirm/cancel)</span>
+│   └── ...
+├── <span class="cmd">contexts/</span>     <span class="comment"># AuthContext (전역 인증 상태)</span>
+├── <span class="cmd">hooks/</span>        <span class="comment"># 커스텀 훅 (useFileUpload 등)</span>
+├── <span class="cmd">constants/</span>    <span class="comment"># 정적 데이터 & 설정</span>
+├── <span class="cmd">styles/</span>       <span class="comment"># 테마, 글로벌 스타일, 디자인 토큰</span>
+├── <span class="cmd">lib/</span>          <span class="comment"># 토큰 스토리지, 유틸리티</span>
+├── <span class="cmd">assets/</span>       <span class="comment"># 67개 SVG 아이콘 & 이미지</span>
+└── <span class="cmd">router/</span>       <span class="comment"># 라우팅 설정 (20+ 라우트)</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔑 인증 플로우</div>
+      <div style="display:grid; gap:8px; max-width:500px; margin:0 auto;">
+        <div class="arch-box" style="background:var(--primary-light); border-color:var(--primary);">
+          🔐 TokenStorage<br><small>localStorage / sessionStorage</small>
+        </div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-box" style="background:var(--info-light); border-color:var(--info);">
+          👤 AuthContext<br><small>useAuth() → user, login, logout, isAuthenticated</small>
+        </div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-box" style="background:var(--warning-light); border-color:var(--warning);">
+          📡 API Client<br><small>Bearer 토큰 자동주입 · 401 → 자동 Refresh</small>
+        </div>
+        <div class="arch-arrow">↕</div>
+        <div class="arch-box" style="background:var(--success-light); border-color:var(--success);">
+          🛡 ProtectedRoute<br><small>비인증 사용자 → /auth 리다이렉트</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🎨 디자인 토큰</div>
+      <div class="card-grid">
+        <div>
+          <h4 style="font-size:13px; color:var(--gray-600); margin-bottom:10px;">컬러 팔레트</h4>
+          <div style="display:flex; gap:4px; flex-wrap:wrap; margin-bottom:12px;">
+            <div style="width:36px; height:36px; background:#5A5CF5; border-radius:6px;" title="Primary"></div>
+            <div style="width:36px; height:36px; background:#E8E8FD; border-radius:6px;" title="Primary Light"></div>
+            <div style="width:36px; height:36px; background:#EBF2FF; border-radius:6px;" title="Secondary"></div>
+            <div style="width:36px; height:36px; background:#C8DCFF; border-radius:6px;" title="Secondary 200"></div>
+            <div style="width:36px; height:36px; background:#6DA2F8; border-radius:6px;" title="Secondary 500"></div>
+            <div style="width:36px; height:36px; background:#111827; border-radius:6px;" title="Gray 900"></div>
+            <div style="width:36px; height:36px; background:#6B7280; border-radius:6px;" title="Gray 500"></div>
+            <div style="width:36px; height:36px; background:#E5E7EB; border-radius:6px;" title="Gray 200"></div>
+          </div>
+          <table class="data-table">
+            <tr><td><code>#5A5CF5</code></td><td>Primary</td></tr>
+            <tr><td><code>#111827 ~ #F9FAFB</code></td><td>GrayScale (12단계)</td></tr>
+            <tr><td><code>9가지 Label Colors</code></td><td>상태/난이도 표시</td></tr>
+          </table>
+        </div>
+        <div>
+          <h4 style="font-size:13px; color:var(--gray-600); margin-bottom:10px;">타이포그래피</h4>
+          <table class="data-table">
+            <tr><td><code>Display D0</code></td><td>40px / 800</td></tr>
+            <tr><td><code>Heading H0-H4</code></td><td>32-18px / 700</td></tr>
+            <tr><td><code>Body XL-XS</code></td><td>20-12px / 400-600</td></tr>
+            <tr><td><code>Caption C0</code></td><td>11px / 500</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== 온보딩 가이드 ====== -->
+  <div class="section" id="section-onboarding">
+    <h1 class="section-title">온보딩 가이드</h1>
+    <p class="section-desc">신규 개발자를 위한 프로젝트 셋업 가이드입니다.</p>
+
+    <div class="card">
+      <div class="card-title">🛠 필수 설치 (macOS)</div>
+      <div class="code-block">
+<span class="comment"># Node.js & npm</span>
+<span class="cmd">brew install</span> node
+
+<span class="comment"># Git</span>
+<span class="cmd">brew install</span> git
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📦 프로젝트 클론 & 설정</div>
+      <div class="code-block">
+<span class="comment"># 1. 저장소 클론</span>
+<span class="cmd">git clone</span> &lt;repository-url&gt;
+<span class="cmd">cd</span> highlog
+
+<span class="comment"># 2. 의존성 설치</span>
+<span class="cmd">npm install</span>
+
+<span class="comment"># 3. 환경변수 설정</span>
+<span class="cmd">cp</span> env .env
+<span class="comment"># .env 파일에서 VITE_API_URL 확인</span>
+
+<span class="comment"># 4. 개발 서버 실행</span>
+<span class="cmd">npm run dev</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📖 주요 npm 스크립트</div>
+      <table class="data-table">
+        <thead>
+          <tr><th>명령어</th><th>설명</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>npm run dev</code></td><td>개발 서버 시작 (Vite, port 5173)</td></tr>
+          <tr><td><code>npm run build</code></td><td>프로덕션 빌드 (TypeScript + Vite)</td></tr>
+          <tr><td><code>npm run preview</code></td><td>프로덕션 빌드 미리보기</td></tr>
+          <tr><td><code>npm run lint</code></td><td>ESLint 코드 검사</td></tr>
+          <tr><td><code>npm run build:schools</code></td><td>학교/학과 데이터 Excel → TypeScript 변환</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🌿 Git 워크플로우</div>
+
+      <h4 style="font-size:14px; margin-bottom:10px;">브랜치 전략</h4>
+      <table class="data-table" style="margin-bottom:20px;">
+        <thead>
+          <tr><th>브랜치</th><th>용도</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>main</code></td><td>프로덕션 배포 브랜치</td></tr>
+          <tr><td><code>dev</code></td><td>개발 통합 브랜치</td></tr>
+          <tr><td><code>feature/*</code></td><td>기능 개발 브랜치</td></tr>
+          <tr><td><code>fix/*</code></td><td>버그 수정 브랜치</td></tr>
+        </tbody>
+      </table>
+
+      <h4 style="font-size:14px; margin-bottom:10px;">커밋 컨벤션</h4>
+      <table class="data-table">
+        <thead>
+          <tr><th>접두사</th><th>용도</th><th>예시</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>feat:</code></td><td>새 기능</td><td>feat: 면접 타이머 추가</td></tr>
+          <tr><td><code>fix:</code></td><td>버그 수정</td><td>fix: 토큰 갱신 무한루프 수정</td></tr>
+          <tr><td><code>chore:</code></td><td>설정/빌드</td><td>chore: ESLint 규칙 업데이트</td></tr>
+          <tr><td><code>docs:</code></td><td>문서</td><td>docs: 온보딩 가이드 추가</td></tr>
+          <tr><td><code>style:</code></td><td>스타일 변경</td><td>style: 버튼 컴포넌트 리스타일</td></tr>
+          <tr><td><code>refactor:</code></td><td>리팩토링</td><td>refactor: API 클라이언트 구조 개선</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔑 환경변수</div>
+      <div class="alert alert-warning">
+        ⚠️ <code>.env</code> 파일은 절대 Git에 커밋하지 마세요.
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr><th>변수</th><th>설명</th><th>기본값</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>VITE_API_URL</code></td><td>백엔드 API 서버 URL</td><td>https://onedaypocket.shop</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📚 프로젝트 문서</div>
+      <p style="font-size:14px; color:var(--gray-600); margin-bottom:12px;"><code>docs/</code> 디렉토리에 상세 문서가 있습니다.</p>
+      <div class="resource-grid">
+        <div class="resource-item">
+          <div class="resource-icon" style="background:var(--info-light);">📑</div>
+          <div class="resource-info">
+            <div class="resource-name">routing.md</div>
+            <div class="resource-url">라우팅 설정 & 페이지 추가 가이드</div>
+          </div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon" style="background:var(--primary-light);">🎨</div>
+          <div class="resource-info">
+            <div class="resource-name">styling.md</div>
+            <div class="resource-url">컬러, 타이포그래피, 아이콘 가이드</div>
+          </div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon" style="background:var(--success-light);">🧩</div>
+          <div class="resource-info">
+            <div class="resource-name">components.md</div>
+            <div class="resource-url">UI 컴포넌트 라이브러리 문서</div>
+          </div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon" style="background:var(--warning-light);">🔐</div>
+          <div class="resource-info">
+            <div class="resource-name">auth-and-api.md</div>
+            <div class="resource-url">인증 & API 아키텍처 가이드</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== 리소스 & 링크 ====== -->
+  <div class="section" id="section-resources">
+    <h1 class="section-title">리소스 & 링크</h1>
+    <p class="section-desc">개발에 필요한 주요 리소스와 외부 서비스 링크입니다.</p>
+
+    <div class="card">
+      <div class="card-title">🌐 서비스 URL</div>
+      <div class="resource-grid">
+        <div class="resource-item">
+          <div class="resource-icon" style="background:var(--primary-light);">🚀</div>
+          <div class="resource-info">
+            <div class="resource-name">HIGH-LOG API</div>
+            <div class="resource-url">https://onedaypocket.shop</div>
+          </div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon" style="background:var(--info-light);">💻</div>
+          <div class="resource-info">
+            <div class="resource-name">로컬 개발 서버</div>
+            <div class="resource-url">http://localhost:5173</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🐙 GitHub</div>
+      <div class="resource-grid">
+        <div class="resource-item">
+          <div class="resource-icon" style="background:var(--gray-100);">📁</div>
+          <div class="resource-info">
+            <div class="resource-name">Repository</div>
+            <div class="resource-url">프론트엔드 소스코드</div>
+          </div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon" style="background:var(--danger-light);">🐛</div>
+          <div class="resource-info">
+            <div class="resource-name">Issues</div>
+            <div class="resource-url">버그 트래킹 & 기능 요청</div>
+          </div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon" style="background:var(--success-light);">🔀</div>
+          <div class="resource-info">
+            <div class="resource-name">Pull Requests</div>
+            <div class="resource-url">코드 리뷰 & 머지</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🔧 기술 스택 참고 문서</div>
+      <div class="resource-grid">
+        <div class="resource-item">
+          <div class="resource-icon" style="background:#E0F2FE;">⚛️</div>
+          <div class="resource-info">
+            <div class="resource-name">React 19 Docs</div>
+            <div class="resource-url">react.dev</div>
+          </div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon" style="background:#FEF3C7;">⚡</div>
+          <div class="resource-info">
+            <div class="resource-name">Vite Docs</div>
+            <div class="resource-url">vite.dev</div>
+          </div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon" style="background:#DBEAFE;">🔷</div>
+          <div class="resource-info">
+            <div class="resource-name">TypeScript Docs</div>
+            <div class="resource-url">typescriptlang.org</div>
+          </div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon" style="background:#FCE7F3;">💅</div>
+          <div class="resource-info">
+            <div class="resource-name">styled-components</div>
+            <div class="resource-url">styled-components.com</div>
+          </div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon" style="background:#FEE2E2;">📡</div>
+          <div class="resource-info">
+            <div class="resource-name">TanStack Query v5</div>
+            <div class="resource-url">tanstack.com/query</div>
+          </div>
+        </div>
+        <div class="resource-item">
+          <div class="resource-icon" style="background:#E0E7FF;">🛣</div>
+          <div class="resource-info">
+            <div class="resource-name">React Router v7</div>
+            <div class="resource-url">reactrouter.com</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📱 앱 정보</div>
+      <table class="data-table">
+        <tbody>
+          <tr><td><strong>서비스명</strong></td><td>HIGH-LOG (하이로그)</td></tr>
+          <tr><td><strong>설명</strong></td><td>AI 대입 면접 준비 서비스</td></tr>
+          <tr><td><strong>타겟 사용자</strong></td><td>대학 입시를 준비하는 고등학생</td></tr>
+          <tr><td><strong>프론트엔드</strong></td><td>React 19 + TypeScript + Vite</td></tr>
+          <tr><td><strong>API 서버</strong></td><td>https://onedaypocket.shop</td></tr>
+          <tr><td><strong>개발 포트</strong></td><td>5173 (Vite dev server)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ====== 문의사항 ====== -->
+  <div class="section" id="section-inquiry">
+    <h1 class="section-title">문의사항</h1>
+    <p class="section-desc">개발 관련 문의, 버그 리포트, 기능 제안을 등록합니다.</p>
+
+    <div class="stats-row" id="inquiry-stats">
+      <div class="stat-card">
+        <div class="stat-number" style="color: var(--gray-800)" id="inq-total">0</div>
+        <div class="stat-label">전체</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" style="color: var(--danger)" id="inq-urgent">0</div>
+        <div class="stat-label">긴급</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" style="color: var(--warning)" id="inq-open">0</div>
+        <div class="stat-label">미해결</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" style="color: var(--success)" id="inq-resolved">0</div>
+        <div class="stat-label">해결</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📝 새 문의 등록</div>
+      <form id="inquiryForm">
+        <div class="form-group">
+          <label class="form-label">제목</label>
+          <input type="text" class="form-input" id="inq-title" placeholder="문의 제목을 입력하세요" required />
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">카테고리</label>
+            <select class="form-select" id="inq-category">
+              <option value="bug">🐛 버그</option>
+              <option value="feature">💡 기능 요청</option>
+              <option value="design">🎨 디자인</option>
+              <option value="general">❓ 일반</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">우선순위</label>
+            <select class="form-select" id="inq-priority">
+              <option value="low">낮음</option>
+              <option value="normal" selected>보통</option>
+              <option value="high">높음</option>
+              <option value="urgent">긴급</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">내용</label>
+          <textarea class="form-textarea" id="inq-body" placeholder="상세 내용을 입력하세요" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">등록</button>
+      </form>
+    </div>
+
+    <div id="inquiry-list"></div>
+  </div>
+
+</div>
+
+<script>
+// Tab navigation
+const tabs = document.querySelectorAll('.tab');
+const sections = document.querySelectorAll('.section');
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    tabs.forEach(t => t.classList.remove('active'));
+    sections.forEach(s => s.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('section-' + tab.dataset.tab).classList.add('active');
+  });
+});
+
+// QA Data
+const qaData = [
+  {
+    category: '🔐 인증',
+    items: [
+      '이메일 회원가입 정상 동작',
+      '이메일 인증코드 발송 및 확인',
+      '비밀번호 정책 (8자 이상, 대소문자, 숫자, 특수문자)',
+      '로그인 성공 및 토큰 저장',
+      '로그인 유지 (keepLogin) 기능',
+      '비밀번호 찾기 플로우',
+      '로그아웃 시 토큰 삭제',
+      '401 발생 시 토큰 자동 갱신',
+      '보호된 페이지 접근 제한',
+    ]
+  },
+  {
+    category: '📄 생기부 관리',
+    items: [
+      '생기부 파일 업로드 (Excel)',
+      '생기부 파일 업로드 (PDF)',
+      '업로드 후 목록에 표시',
+      '생기부 상세 조회',
+      '다건 생기부 관리',
+      '생기부 삭제',
+    ]
+  },
+  {
+    category: '🤖 AI 질문 생성',
+    items: [
+      '생기부 기반 질문 자동 생성',
+      '종합 유형 질문 생성',
+      '교과 유형 질문 생성',
+      '학교자체 유형 질문 생성',
+      '질문 생성 로딩 UI',
+      '질문 목록 조회',
+      '난이도별 필터링 (기본/심화/고급)',
+      '질문 즐겨찾기 추가/제거',
+      '질문 저장',
+    ]
+  },
+  {
+    category: '🎤 면접 연습',
+    items: [
+      '텍스트 면접 연습 시작',
+      '답변 입력 및 제출',
+      'AI 피드백 수신',
+      '평가 점수 표시 (인성/전공적합성/교직적성)',
+      '연습 결과 저장',
+      '연습 이력 조회',
+      '음성 면접 연습 (마이크)',
+    ]
+  },
+  {
+    category: '🧠 AI 엔진',
+    items: [
+      '프롬프트 v2 질문 생성 품질 검증',
+      '대학별 맞춤 질문 정확성',
+      '꼬리 질문 자연스러움',
+      '난이도 자동 조절 동작',
+      '세분화 평가 점수 정확성',
+      '모범 답안 생성 품질',
+      '답변 개선 제안 유용성',
+      '누적 학습 리포트 데이터 정합성',
+      'AI 스트리밍 응답 속도',
+      'STT 음성 인식 정확도',
+    ]
+  },
+  {
+    category: '👤 마이페이지',
+    items: [
+      '계정 정보 조회',
+      '회원 탈퇴',
+      '로그아웃',
+    ]
+  },
+  {
+    category: '📱 UI/UX',
+    items: [
+      '랜딩 페이지 렌더링',
+      '서비스 가이드 페이지',
+      '반응형 레이아웃 (모바일)',
+      '공지사항 조회',
+      'FAQ 아코디언',
+      '이용약관 / 개인정보처리방침 표시',
+      '토스트 알림 동작',
+      '모달 열기/닫기',
+    ]
+  }
+];
+
+// Render QA
+const qaContainer = document.getElementById('qa-container');
+const qaState = JSON.parse(localStorage.getItem('highlog-qa') || '{}');
+
+function renderQA() {
+  let html = '';
+  let totalItems = 0;
+  let checkedItems = 0;
+
+  qaData.forEach((group, gi) => {
+    const groupChecked = group.items.filter((_, ii) => qaState[`${gi}-${ii}`]).length;
+    html += `
+      <div class="qa-category">
+        <div class="qa-category-header" onclick="toggleQAGroup(${gi})">
+          <span class="qa-category-title">${group.category}</span>
+          <span class="qa-count">${groupChecked}/${group.items.length} <span class="chevron ${qaState[`group-${gi}`] !== false ? 'open' : ''}" id="chevron-${gi}">&#9654;</span></span>
+        </div>
+        <div class="collapsible-content ${qaState[`group-${gi}`] !== false ? 'open' : ''}" id="qa-group-${gi}">
+    `;
+    group.items.forEach((item, ii) => {
+      const checked = qaState[`${gi}-${ii}`];
+      totalItems++;
+      if (checked) checkedItems++;
+      html += `
+        <div class="qa-item">
+          <div class="qa-check ${checked ? 'checked' : ''}" onclick="toggleQA(${gi},${ii})">
+            ${checked ? '&#10003;' : ''}
+          </div>
+          <span style="color:${checked ? 'var(--gray-400)' : 'var(--gray-700)'}; ${checked ? 'text-decoration:line-through;' : ''}">${item}</span>
+        </div>
+      `;
+    });
+    html += '</div></div>';
+  });
+
+  qaContainer.innerHTML = html;
+  document.getElementById('qa-total').textContent = totalItems;
+  document.getElementById('qa-passed').textContent = checkedItems;
+  document.getElementById('qa-failed').textContent = totalItems - checkedItems;
+  document.getElementById('qa-percent').textContent = totalItems ? Math.round(checkedItems / totalItems * 100) + '%' : '0%';
+}
+
+function toggleQA(gi, ii) {
+  const key = `${gi}-${ii}`;
+  qaState[key] = !qaState[key];
+  localStorage.setItem('highlog-qa', JSON.stringify(qaState));
+  renderQA();
+}
+
+function toggleQAGroup(gi) {
+  const key = `group-${gi}`;
+  qaState[key] = qaState[key] === false ? true : false;
+  localStorage.setItem('highlog-qa', JSON.stringify(qaState));
+  renderQA();
+}
+
+renderQA();
+
+// Inquiry System
+let inquiries = JSON.parse(localStorage.getItem('highlog-inquiries') || '[]');
+
+const categoryEmoji = { bug: '🐛', feature: '💡', design: '🎨', general: '❓' };
+const priorityLabel = { low: '낮음', normal: '보통', high: '높음', urgent: '긴급' };
+const priorityColor = { low: 'var(--gray-400)', normal: 'var(--info)', high: 'var(--warning)', urgent: 'var(--danger)' };
+
+function renderInquiries() {
+  const list = document.getElementById('inquiry-list');
+  const total = inquiries.length;
+  const urgent = inquiries.filter(i => i.priority === 'urgent').length;
+  const resolved = inquiries.filter(i => i.resolved).length;
+  const open = total - resolved;
+
+  document.getElementById('inq-total').textContent = total;
+  document.getElementById('inq-urgent').textContent = urgent;
+  document.getElementById('inq-open').textContent = open;
+  document.getElementById('inq-resolved').textContent = resolved;
+
+  if (!total) {
+    list.innerHTML = '<div class="card" style="text-align:center; color:var(--gray-400); padding:40px;">등록된 문의가 없습니다.</div>';
+    return;
+  }
+
+  list.innerHTML = inquiries.map((inq, idx) => `
+    <div class="inquiry-item" style="border-left: 3px solid ${priorityColor[inq.priority]}">
+      <div class="inquiry-header">
+        <div class="inquiry-title">${categoryEmoji[inq.category]} ${inq.title}</div>
+        <div class="inquiry-meta">
+          <span class="tag ${inq.resolved ? 'tag-green' : 'tag-orange'}">${inq.resolved ? '해결' : '미해결'}</span>
+          <span style="color:${priorityColor[inq.priority]}">${priorityLabel[inq.priority]}</span>
+          <span>${inq.date}</span>
+          <button onclick="toggleResolve(${idx})" style="background:none;border:none;cursor:pointer;font-size:12px;color:var(--primary);">${inq.resolved ? '미해결로' : '해결로'}</button>
+          <button onclick="deleteInquiry(${idx})" style="background:none;border:none;cursor:pointer;font-size:12px;color:var(--danger);">삭제</button>
+        </div>
+      </div>
+      <div class="inquiry-body">${inq.body}</div>
+    </div>
+  `).join('');
+}
+
+function toggleResolve(idx) {
+  inquiries[idx].resolved = !inquiries[idx].resolved;
+  localStorage.setItem('highlog-inquiries', JSON.stringify(inquiries));
+  renderInquiries();
+}
+
+function deleteInquiry(idx) {
+  inquiries.splice(idx, 1);
+  localStorage.setItem('highlog-inquiries', JSON.stringify(inquiries));
+  renderInquiries();
+}
+
+document.getElementById('inquiryForm').addEventListener('submit', (e) => {
+  e.preventDefault();
+  const now = new Date();
+  inquiries.unshift({
+    title: document.getElementById('inq-title').value,
+    category: document.getElementById('inq-category').value,
+    priority: document.getElementById('inq-priority').value,
+    body: document.getElementById('inq-body').value,
+    date: now.toISOString().split('T')[0],
+    resolved: false
+  });
+  localStorage.setItem('highlog-inquiries', JSON.stringify(inquiries));
+  renderInquiries();
+  e.target.reset();
+});
+
+renderInquiries();
+</script>
+
+</body>
+</html>

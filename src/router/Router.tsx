@@ -1,0 +1,152 @@
+import { createBrowserRouter } from "react-router-dom";
+import App from "@/App";
+import Home from "@/pages/home";
+import AuthPage from "@/pages/authPage";
+import FindPasswordPage from "@/pages/authPage/findPasswordPage";
+import ProtectedRoute from "@/components/auth/ProtectedRoute";
+import Guide from "@/pages/guide";
+import CreateQuestions from "@/pages/interviewQuestions/createQuestions";
+import LoadingQuestions from "@/pages/interviewQuestions/loadingQuestions";
+import ShowQuestions from "@/pages/interviewQuestions/showQuestions";
+import SaveQuestions from "@/pages/interviewQuestions/saveQuestions";
+import InterviewPractice from "@/pages/interviewPractice";
+import InterviewStorage from "@/pages/interviewPractice/storage";
+import MyPage from "@/pages/myPage";
+import WithdrawAccountPage from "@/pages/myPage/withdraw";
+import Support from "@/pages/support";
+import Privacy from "@/pages/privacy";
+import Term from "@/pages/term";
+import RecordManagement from "@/pages/recordManagement";
+import RecordUpload from "@/pages/recordManagement/upload";
+import RecordDetail from "@/pages/recordManagement/detail";
+import InterviewResult from "@/pages/interviewPractice/interviewResult";
+import QuestionsList from "@/pages/recordManagement/detail/questionsList";
+import SupportDetail from "@/pages/support/detail";
+import Faq from "@/pages/faq";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    children: [
+      {
+        index: true,
+        element: <Home />,
+      },
+      {
+        path: "/privacy",
+        element: <Privacy />,
+      },
+      {
+        path: "/term",
+        element: <Term />,
+      },
+      {
+        path: "auth",
+        element: <AuthPage />,
+      },
+      {
+        path: "auth/find-password",
+        element: <FindPasswordPage />,
+      },
+      {
+        path: "guide",
+        element: <Guide />,
+      },
+      {
+        path: "question",
+        element: <CreateQuestions />,
+      },
+      {
+        path: "question/loading",
+        element: <LoadingQuestions />,
+      },
+      {
+        path: "question/show",
+        element: <ShowQuestions />,
+      },
+      {
+        path: "question/storage",
+        element: <SaveQuestions />,
+      },
+      {
+        path: "interview/practice",
+        element: (
+          <ProtectedRoute>
+            <InterviewPractice />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "interview/practice/storage",
+        element: (
+          <ProtectedRoute>
+            <InterviewStorage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "interview/result/:sessionId",
+        element: <InterviewResult />,
+      },
+      {
+        path: "record_management",
+        element: (
+          <ProtectedRoute>
+            <RecordManagement />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "record_management/upload",
+        element: (
+          <ProtectedRoute>
+            <RecordUpload />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "record_management/:id",
+        element: (
+          <ProtectedRoute>
+            <RecordDetail />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "record_detail/:id/question_list",
+        element: <QuestionsList />,
+      },
+      {
+        path: "mypage",
+        element: (
+          <ProtectedRoute>
+            <MyPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "mypage/withdraw",
+        element: (
+          <ProtectedRoute>
+            <WithdrawAccountPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "support",
+        element: <Support />,
+      },
+      {
+        path: "support/:id",
+        element: <SupportDetail />,
+      },
+      {
+        path: "faq",
+        element: <Faq />,
+      },
+    ],
+  },
+]);
+
+export default router;
