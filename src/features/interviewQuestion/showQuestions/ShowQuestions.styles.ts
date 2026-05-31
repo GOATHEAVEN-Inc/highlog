@@ -68,3 +68,11 @@ export const QuestionCardWrapper = styled.div`
     width: 100%;
   }
 `;
+
+export const EmptyState = styled.div`
+  width: 100%;
+  padding: 48px 16px;
+  text-align: center;
+  color: ${({ theme }) => theme.colors.grayScale["03"]};
+  ${({ theme }) => theme.typography.body.M0};
+`;

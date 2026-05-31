@@ -74,13 +74,10 @@ export function useRecordDetail(initialRecord: RecordDetail) {
   }, [recordId, text, newFile, deleteRecordAsync, uploadRecordAsync, navigate]);
 
   const handleFileRemove = useCallback(() => {
-    if (initialRecord) {
-      console.log("Removing file for record:", initialRecord.id);
-    }
     setNewFile(null);
     setUploadedFileName("");
     setFileStatus("idle");
-  }, [initialRecord]);
+  }, []);
 
   const handleDeleteClick = useCallback(() => {
     setIsModalOpen(true);

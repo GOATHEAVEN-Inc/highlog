@@ -7,10 +7,15 @@ const rolling = keyframes`
 `;
 
 export const AutoScrollCardSectionConatiner = styled.section`
-    display: inline-flex;
+    display: flex;
+    width: 100%;
     padding: 62px 0 159px 0;
     justify-content: center;
     align-items: center;
+
+    @media (max-width: 1024px) {
+        padding: 40px 0 56px;
+    }
 `;
 
 export const MainWrapper = styled.div`
@@ -19,12 +24,22 @@ export const MainWrapper = styled.div`
     width: 100%;
     align-items: center;
     gap: 48px;
+
+    @media (max-width: 1024px) {
+        gap: 24px;
+    }
 `;
 
 export const MainTitle = styled.p`
     ${({theme}) => theme.typography.head.H2};
     color: ${({theme}) => theme.colors.grayScale["00"]};
     text-align: center;
+
+    @media (max-width: 1024px) {
+        font-size: 20px;
+        padding: 0 24px;
+        line-height: 1.4;
+    }
 `;
 
 export const ScrollContainer = styled.div`
@@ -50,6 +65,12 @@ export const CardImg = styled.div`
     border-radius: 16px;
     background: url(${CARD_IMG});
     position: relative;
+    flex-shrink: 0;
+
+    @media (max-width: 640px) {
+        width: 280px;
+        height: 174px;
+    }
 `;
 
 export const CardNoneImg = styled.div`
@@ -59,6 +80,12 @@ export const CardNoneImg = styled.div`
     background-color: #f0f2f7;
     box-shadow: 0 3px 2px 0 rgba(27, 28, 54, 0.25);
     position: relative;
+    flex-shrink: 0;
+
+    @media (max-width: 640px) {
+        width: 280px;
+        height: 174px;
+    }
 `;
 
 export const CardTextImg = styled.p`

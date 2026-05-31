@@ -1,17 +1,21 @@
 import styled from "styled-components";
+import { headerAlignedPadding } from "@/styles/layout";
 
 export const RecordUploadContainer = styled.div`
     width: 100%;
-    min-width: 1440px;
-    height: 100%;
+    box-sizing: border-box;
     display: flex;
     justify-content: center;
-    padding-top: 96px;
+    padding-top: 64px;
     padding-bottom: 96px;
+    ${headerAlignedPadding}
 `;
 
 export const RecordUploadWrapper = styled.div`
     display: flex;
+    width: 100%;
+    max-width: 1600px;
+    box-sizing: border-box;
     flex-direction: column;
     align-items: flex-start;
     gap: 48px;
@@ -19,8 +23,9 @@ export const RecordUploadWrapper = styled.div`
 
 export const UploadBox = styled.div`
     display: flex;
-    width: 1200px;
-    padding: 48px 72px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 48px clamp(24px, 4vw, 72px);
     flex-direction: column;
     align-items: center;
     gap: 48px;

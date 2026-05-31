@@ -5,6 +5,7 @@ import type {
   InterviewChatResponse,
   InterviewInitializeRequest,
   InterviewListResponse,
+  InterviewChatAudioResponse,
 } from "@/api/interview/interviewTypes";
 
 export async function initializeInterviewText(
@@ -13,6 +14,21 @@ export async function initializeInterviewText(
   return apiClient<InterviewChatResponse>("/ai/interview/start", {
     method: "POST",
     body: JSON.stringify(request),
+  });
+}
+
+export async function chatInterviewAudio(
+  session_id: string,
+  audioBlob: Blob,
+  responseTime: number,
+): Promise<InterviewChatAudioResponse> {
+  const formData = new FormData();
+  formData.append("audio", audioBlob, "audio.webm");
+  formData.append("response_time", responseTime.toString());
+
+  return apiClient<InterviewChatAudioResponse>(`/ai/interview/chat/audio/${session_id}`, {
+    method: "POST",
+    body: formData,
   });
 }
 
@@ -56,11 +72,9 @@ export async function chatInterviewTextStream(
         if (trimmed.startsWith("data:")) {
           const dataStr = trimmed.substring(5).trim();
 
-          console.log("Raw SSE Line:", dataStr);
           if (dataStr) {
             try {
               const parsed = JSON.parse(dataStr);
-              console.log("Parsed SSE Data:", parsed);
               onMessage(parsed);
             } catch (e) {
               console.error("Error parsing SSE data:", e);

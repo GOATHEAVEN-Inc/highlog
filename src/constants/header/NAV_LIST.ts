@@ -25,6 +25,15 @@ export const NAV_LIST = [
     ],
   },
   {
+    id: 6,
+    title: "질문 분석",
+    path: "/qna",
+    sub_list: [
+      { title: "질문 분석", path: "/qna" },
+      { title: "분석 기록", path: "/qna/storage" },
+    ],
+  },
+  {
     id: 4,
     title: "이용안내",
     path: "/guide",

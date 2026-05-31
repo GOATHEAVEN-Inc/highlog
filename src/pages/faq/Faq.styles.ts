@@ -1,19 +1,22 @@
 import styled from "styled-components";
+import { headerAlignedPadding } from "@/styles/layout";
 
 export const FaqContainer = styled.div`
   width: 100%;
-  min-width: 1440px;
-  height: 100%;
+  box-sizing: border-box;
   display: flex;
   justify-content: center;
-  padding-top: 96px;
+  padding-top: 64px;
   padding-bottom: 96px;
   background-color: ${({ theme }) => theme.colors.grayScale["10"]};
+  ${headerAlignedPadding}
 `;
 
 export const FaqWrapper = styled.div`
   display: flex;
-  width: 1200px;
+  width: 100%;
+  max-width: 1200px;
+  box-sizing: border-box;
   height: 100%;
   flex-direction: column;
   align-items: center;

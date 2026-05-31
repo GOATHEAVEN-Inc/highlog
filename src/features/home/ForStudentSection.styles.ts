@@ -19,16 +19,31 @@ export const ForStudentSectionContainer =styled.section`
     justify-content: center;
     padding-top : 120px;
     overflow: hidden;
+
+    @media (max-width: 1024px) {
+        height: auto;
+        padding: 48px 20px;
+    }
 `;
 
 export const TextImgWrapper = styled.div`
     display: flex;
     flex-direction: column;
     gap: 42px;
+
+    @media (max-width: 1024px) {
+        gap: 24px;
+        width: 100%;
+    }
 `;
 
 export const TextBox = styled.div`
     padding-left: 32px;
+
+    @media (max-width: 1024px) {
+        padding-left: 0;
+        text-align: center;
+    }
 `;
 
 export const TextSub = styled.p`
@@ -40,6 +55,11 @@ export const TextMain = styled.p`
     ${({theme}) => theme.typography.head.H2};
     color: #000;
     white-space: pre-wrap;
+
+    @media (max-width: 1024px) {
+        font-size: 20px;
+        line-height: 1.4;
+    }
 `;
 
 export const ImgButtonBox = styled.div`
@@ -47,11 +67,20 @@ export const ImgButtonBox = styled.div`
     flex-direction: column;
     width: 1134px;
     height: 775px;
+
+    @media (max-width: 1024px) {
+        width: 100%;
+        height: auto;
+    }
 `;
 
 export const ButtonBox = styled.div`
     display: flex;
     padding-left: 40px;
+
+    @media (max-width: 1024px) {
+        padding-left: 0;
+    }
 `;
 
 export const ClickButton = styled.button<{$active: boolean}>`
@@ -69,6 +98,13 @@ export const ClickButton = styled.button<{$active: boolean}>`
 
     ${({theme}) => theme.typography.body.L2};
     color: ${({$active}) => $active ? "#1B1EC8" : "#8B8CA5"};
+
+    @media (max-width: 1024px) {
+        flex: 1;
+        height: 40px;
+        padding: 6px 12px;
+        font-size: 13px;
+    }
 `;
 
 export const SampleImageWrapper = styled.div`
@@ -94,6 +130,11 @@ export const DescriptionBox = styled.div`
     background-color: ${({theme}) => theme.colors.primary["00"]};
     box-shadow: 2px 3px 2px 0 rgba(7, 2, 30, 0.25);
     animation: ${slideUp} 0.5s ease-out forwards;
+
+    @media (max-width: 1024px) {
+        /* 모바일에선 image overlay 코멘트 박스 숨김 — 좁아서 가독성 떨어짐 */
+        display: none;
+    }
 `;
 
 export const DescriptionText = styled.p`

@@ -5,44 +5,65 @@ import * as S from "@/features/auth/FindPasswordForm.styles";
 type FindPasswordStep = "initial" | "newPassword";
 
 interface FindPasswordFormProps {
-  onSendVerificationCode: (email: string) => void;
-  onVerifyAndGoNext: (data: { email: string; verificationCode: string }) => void;
+  onSendVerificationCode: (email: string) => Promise<void>;
+  onVerifyAndGoNext: (data: { email: string; verificationCode: string }) => Promise<void>;
   onChangePassword: (data: {
     email: string;
     verificationCode: string;
-    currentPassword: string;
     newPassword: string;
     newPasswordConfirm: string;
-  }) => void;
+  }) => Promise<void>;
+  isSendingCode?: boolean;
+  isVerifying?: boolean;
+  isChangingPassword?: boolean;
+  errorMessage?: string;
 }
 
 export default function FindPasswordForm({
   onSendVerificationCode,
   onVerifyAndGoNext,
   onChangePassword,
+  isSendingCode,
+  isVerifying,
+  isChangingPassword,
+  errorMessage,
 }: FindPasswordFormProps) {
   const [step, setStep] = useState<FindPasswordStep>("initial");
   const [email, setEmail] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
-  const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [newPasswordConfirm, setNewPasswordConfirm] = useState("");
 
-  const handleGoToPasswordChange = (e: React.FormEvent) => {
-    e.preventDefault();
-    onVerifyAndGoNext({ email, verificationCode });
-    setStep("newPassword");
+  const handleSendCode = () => {
+    const trimmed = email.trim();
+    if (!trimmed) return;
+    onSendVerificationCode(trimmed).catch(() => {
+      /* page 측에서 errorMessage로 표시 */
+    });
   };
 
-  const handleChangePassword = (e: React.FormEvent) => {
+  const handleGoToPasswordChange = async (e: React.FormEvent) => {
     e.preventDefault();
-    onChangePassword({
-      email,
-      verificationCode,
-      currentPassword,
-      newPassword,
-      newPasswordConfirm,
-    });
+    try {
+      await onVerifyAndGoNext({ email, verificationCode });
+      setStep("newPassword");
+    } catch {
+      /* page 측에서 errorMessage로 표시, step 유지 */
+    }
+  };
+
+  const handleChangePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await onChangePassword({
+        email,
+        verificationCode,
+        newPassword,
+        newPasswordConfirm,
+      });
+    } catch {
+      /* page 측에서 errorMessage로 표시 */
+    }
   };
 
   if (step === "initial") {
@@ -62,9 +83,10 @@ export default function FindPasswordForm({
             />
             <S.OpenModalButton
               type="button"
-              onClick={() => email.trim() && onSendVerificationCode(email.trim())}
+              onClick={handleSendCode}
+              disabled={isSendingCode || !email.trim()}
             >
-              인증번호 받기
+              {isSendingCode ? "발송 중..." : "인증번호 받기"}
             </S.OpenModalButton>
           </S.EmailInputRow>
         </S.FieldWrapper>
@@ -79,27 +101,19 @@ export default function FindPasswordForm({
             required
           />
         </S.VerifyCodeFieldWrapper>
+        {errorMessage && <S.ErrorText>{errorMessage}</S.ErrorText>}
         <S.PasswordChangeButtonWrapper>
-          <S.AuthPrimaryButton type="submit">비밀번호 변경</S.AuthPrimaryButton>
+          <S.AuthPrimaryButton type="submit" disabled={isVerifying}>
+            {isVerifying ? "확인 중..." : "비밀번호 변경"}
+          </S.AuthPrimaryButton>
         </S.PasswordChangeButtonWrapper>
       </S.Form>
     );
   }
 
-  // step === "newPassword"
   return (
     <S.Form onSubmit={handleChangePassword}>
       <S.FormTitle>비밀번호 변경</S.FormTitle>
-      <S.FieldWrapper $gap={7}>
-        <S.Label htmlFor="findPassword-current">현재 비밀번호</S.Label>
-        <PasswordInput
-          id="findPassword-current"
-          placeholder="비밀번호를 입력해주세요"
-          value={currentPassword}
-          onChange={(e) => setCurrentPassword(e.target.value)}
-          required
-        />
-      </S.FieldWrapper>
       <S.FieldWrapper $gap={7}>
         <S.Label htmlFor="findPassword-new">새 비밀번호</S.Label>
         <PasswordInput
@@ -120,8 +134,11 @@ export default function FindPasswordForm({
           required
         />
       </S.FieldWrapper>
+      {errorMessage && <S.ErrorText>{errorMessage}</S.ErrorText>}
       <S.SubmitButtonWrapper>
-        <S.AuthPrimaryButton type="submit">변경 완료</S.AuthPrimaryButton>
+        <S.AuthPrimaryButton type="submit" disabled={isChangingPassword}>
+          {isChangingPassword ? "변경 중..." : "변경 완료"}
+        </S.AuthPrimaryButton>
       </S.SubmitButtonWrapper>
     </S.Form>
   );

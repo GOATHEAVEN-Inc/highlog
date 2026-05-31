@@ -28,7 +28,6 @@ export function useRecordUpload() {
   return useMutation({
     mutationFn: uploadRecord,
     onSuccess: () => {
-      console.log("[업로드 완료] 목록 갱신 시작");
       queryClient.invalidateQueries({ queryKey: ["records"] });
       queryClient.refetchQueries({ queryKey: ["records"] });
     },

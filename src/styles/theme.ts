@@ -1,7 +1,21 @@
 const theme = {
   colors: {
+    // 보라 단일값(legacy). 신규 작업은 primaryScale 사용 권장.
     primary: {
       '00': '#5A5CF5',
+    },
+    // 보라 10단계 스케일 (chewing-mono 톤, base = #5A5CF5)
+    primaryScale: {
+      '50': '#F1F1FE',
+      '100': '#E5E5FD',
+      '200': '#C9CAFA',
+      '300': '#A2A4F8',
+      '400': '#7B7DF7',
+      '500': '#5A5CF5',
+      '600': '#4849E5',
+      '700': '#3A3BCC',
+      '800': '#2D2EA8',
+      '900': '#1F2080',
     },
     secondary: {
       '00': '#031786',
@@ -39,112 +53,67 @@ const theme = {
       '06': '#DE2225',
       '07': '#F78387',
       '08': '#FFDCDC',
-    }
+    },
+    // 의미적 색상 (alert/state)
+    semantic: {
+      success: '#16A34A',
+      successBg: '#DCFCE7',
+      warning: '#F59E0B',
+      warningBg: '#FEF3C7',
+      danger: '#DC2626',
+      dangerBg: '#FEE2E2',
+      info: '#2563EB',
+      infoBg: '#DBEAFE',
+    },
   },
-  typography : {
+  typography: {
     display: {
-      'D0': {
-        fontSize: '40px',
-        fontWeight: '700',
-        lineHeight: '60px',
-      },
+      D0: { fontSize: '40px', fontWeight: '700', lineHeight: '60px' },
     },
     head: {
-      'H0': {
-        fontSize: '36px',
-        fontWeight: '800',
-        lineHeight: '54px',
-      },
-      'H1': {
-        fontSize: '36px',
-        fontWeight: '700',
-        lineHeight: '36px',
-      },
-      'H2': {
-        fontSize: '32px',
-        fontWeight: '700',
-        lineHeight: '48px',
-      },
-      'H3': {
-        fontSize: '28px',
-        fontWeight: '600',
-        lineHeight: '42px',
-      },
-      'H4': {
-        fontSize: '24px',
-        fontWeight: '600',
-        lineHeight: '36px',
-      },
+      H0: { fontSize: '36px', fontWeight: '800', lineHeight: '54px' },
+      H1: { fontSize: '36px', fontWeight: '700', lineHeight: '36px' },
+      H2: { fontSize: '32px', fontWeight: '700', lineHeight: '48px' },
+      H3: { fontSize: '28px', fontWeight: '600', lineHeight: '42px' },
+      H4: { fontSize: '24px', fontWeight: '600', lineHeight: '36px' },
     },
     body: {
-      'XL': {
-        fontSize: '24px',
-        fontWeight: '400',
-        lineHeight: '36px',
-      },
-      'L0': {
-        fontSize: '20px',
-        fontWeight: '400',
-        lineHeight: '30px',
-      },
-      'L1': {
-        fontSize: '20px',
-        fontWeight: '500',
-        lineHeight: '30px',
-      },
-      'L2': {
-        fontSize: '20px',
-        fontWeight: '700',
-        lineHeight: '30px',
-      },
-      'M0': {
-        fontSize: '18px',
-        fontWeight: '400',
-        lineHeight: '27px',
-      },
-      'M1': {
-        fontSize: '18px',
-        fontWeight: '500',
-        lineHeight: '27px',
-      },
-      'M2': {
-        fontSize: '18px',
-        fontWeight: '700',
-        lineHeight: '27px',
-      },
-      'S0': {
-        fontSize: '16px',
-        fontWeight: '400',
-        lineHeight: '24px',
-      },
-      'S1': {
-        fontSize: '16px',
-        fontWeight: '500',
-        lineHeight: '24px',
-      },
-      'S2': {
-        fontSize: '16px',
-        fontWeight: '600',
-        lineHeight: '24px',
-      },
-      'XS1': {
-        fontSize: '14px',
-        fontWeight: '400',
-        lineHeight: '21px',
-      },
-      'XS2': {
-        fontSize: '14px',
-        fontWeight: '600',
-        lineHeight: '21px',
-      },
+      XL: { fontSize: '24px', fontWeight: '400', lineHeight: '36px' },
+      L0: { fontSize: '20px', fontWeight: '400', lineHeight: '30px' },
+      L1: { fontSize: '20px', fontWeight: '500', lineHeight: '30px' },
+      L2: { fontSize: '20px', fontWeight: '700', lineHeight: '30px' },
+      M0: { fontSize: '18px', fontWeight: '400', lineHeight: '27px' },
+      M1: { fontSize: '18px', fontWeight: '500', lineHeight: '27px' },
+      M2: { fontSize: '18px', fontWeight: '700', lineHeight: '27px' },
+      S0: { fontSize: '16px', fontWeight: '400', lineHeight: '24px' },
+      S1: { fontSize: '16px', fontWeight: '500', lineHeight: '24px' },
+      S2: { fontSize: '16px', fontWeight: '600', lineHeight: '24px' },
+      XS1: { fontSize: '14px', fontWeight: '400', lineHeight: '21px' },
+      XS2: { fontSize: '14px', fontWeight: '600', lineHeight: '21px' },
     },
     caption: {
-      'C0': {
-        fontSize: '12px',
-        fontWeight: '500',
-        lineHeight: '18px',
-      },
+      C0: { fontSize: '12px', fontWeight: '500', lineHeight: '18px' },
     },
+  },
+  radius: {
+    xs: '6px',
+    sm: '8px',
+    md: '12px',
+    lg: '16px',
+    xl: '20px',
+    full: '9999px',
+  },
+  shadows: {
+    xs: '0 1px 2px 0 rgba(15, 14, 71, 0.04)',
+    sm: '0 1px 3px 0 rgba(15, 14, 71, 0.06), 0 1px 2px -1px rgba(15, 14, 71, 0.05)',
+    md: '0 4px 12px -2px rgba(15, 14, 71, 0.08), 0 2px 4px -2px rgba(15, 14, 71, 0.05)',
+    lg: '0 10px 30px -5px rgba(15, 14, 71, 0.12), 0 4px 6px -4px rgba(15, 14, 71, 0.08)',
+    focus: '0 0 0 3px rgba(90, 92, 245, 0.18)',
+  },
+  transitions: {
+    fast: '120ms ease',
+    base: '160ms ease',
+    slow: '240ms ease',
   },
 };
 

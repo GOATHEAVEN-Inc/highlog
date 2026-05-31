@@ -20,7 +20,8 @@ export const Header = styled.div`
 
 export const TextBox = styled.div`
   display: flex;
-  width: 1140px;
+  width: 100%;
+  box-sizing: border-box;
   padding-bottom: 16px;
   flex-direction: column;
   align-items: flex-start;

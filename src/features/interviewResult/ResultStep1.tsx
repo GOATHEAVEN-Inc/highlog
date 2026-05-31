@@ -4,7 +4,6 @@ import Title from "@/components/title/Title";
 import * as S from "@/features/interviewResult/ResultStep1.styles";
 import { useInterviewAnalyze } from "@/api/interview/useInterviewApi";
 import { useParams } from "react-router-dom";
-import { useEffect } from "react";
 
 const formatTime = (seconds: number) => {
   const m = Math.floor(seconds / 60);
@@ -24,9 +23,6 @@ export default function ResultStep1() {
   const { data } = useInterviewAnalyze(sessionId || "", {
     enabled: !!sessionId,
   });
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
   const displayData = data;
 
   const specifyScores = [
@@ -73,7 +69,9 @@ export default function ResultStep1() {
           <S.SettingBox>
             <S.SettingLabel>면접 모드</S.SettingLabel>
             <S.SettingValue>
-              {displayData?.mode === "TEXT" ? "필기 면접" : "음성 면접"}
+              {(displayData?.mode ?? "").toLowerCase() === "text"
+                ? "텍스트 면접"
+                : "음성 면접"}
             </S.SettingValue>
           </S.SettingBox>
           <S.SettingBox>

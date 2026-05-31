@@ -2,7 +2,9 @@ import styled from "styled-components";
 
 export const SearchFilterContainer = styled.div`
     display: flex;
-    width: 360px;
+    width: 100%;
+    max-width: 360px;
+    box-sizing: border-box;
     padding: 8px 16px;
     align-items: center;
     gap: 24px;
@@ -13,10 +15,10 @@ export const SearchFilterContainer = styled.div`
 
 export const TitleIconWrap = styled.div`
     display: flex;
-    width: 280px;
+    flex: 1;
+    min-width: 0;
     justify-content: space-between;
     align-items: center;
-    flex-shrink: 0;
 `;
 
 export const Title = styled.input`

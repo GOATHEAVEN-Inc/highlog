@@ -8,6 +8,11 @@ export const CreateFormBox = styled.div`
   border-radius: 16px;
   box-sizing: border-box;
   margin-top: 24px;
+
+  @media (max-width: 768px) {
+    padding: 28px 20px;
+    margin-top: 16px;
+  }
 `;
 
 export const FormBoxTitle = styled.h2`
@@ -23,6 +28,13 @@ export const FormBoxSubTitleRow = styled.div`
   gap: 16px;
   width: 100%;
   margin: 95px 0 32px;
+
+  @media (max-width: 768px) {
+    margin: 40px 0 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
 `;
 
 export const FormBoxSubTitle = styled(FormBoxTitle)`
@@ -172,6 +184,12 @@ export const SchoolRecordRow = styled.div`
   align-items: center;
   gap: 57px;
   width: 100%;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
 `;
 
 export const SchoolRecordDropDownWrapper = styled.div`
@@ -233,6 +251,11 @@ export const FormFieldRow = styled(FormField)`
   display: flex;
   align-items: flex-start;
   gap: 114px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 8px;
+  }
 `;
 
 export const FormFieldRowContent = styled.div`
@@ -291,12 +314,24 @@ export const SchoolDepartmentRow = styled(FormField)`
   align-items: center;
   justify-content: space-between;
   width: 100%;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
 `;
 
 export const DropDownGroup = styled.div`
   display: flex;
   align-items: center;
   gap: 40px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
 
   & > div {
     position: relative;
@@ -320,6 +355,11 @@ export const ApplicationTypeSection = styled(FormField)`
   display: flex;
   align-items: flex-start;
   gap: 75px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 12px;
+  }
 `;
 
 export const ApplicationTypeContent = styled.div`
@@ -332,6 +372,11 @@ export const ApplicationTypeRow = styled.div`
   display: flex;
   align-items: center;
   gap: 20px;
+  flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    gap: 12px;
+  }
 `;
 
 export const ApplicationTypeOption = styled.label`

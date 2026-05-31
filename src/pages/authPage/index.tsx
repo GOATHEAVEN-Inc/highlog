@@ -52,7 +52,7 @@ export default function AuthPage() {
     keepLogin: boolean;
   }) => {
     try {
-      await login({ ...data });
+      await login({ ...data, email: data.email.trim() });
       // login 성공 시 AuthContext에서 navigate("/") 처리
     } catch (err) {
       if (err instanceof ApiErrorException && err.status === 401) {

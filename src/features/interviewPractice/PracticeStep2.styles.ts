@@ -7,7 +7,9 @@ const bounce = keyframes`
 
 export const PageContainer = styled.div`
   display: flex;
-  width: 1200px;
+  width: 100%;
+  max-width: 1200px;
+  box-sizing: border-box;
   flex-direction: column;
   align-items: flex-start;
   gap: 48px;
@@ -26,7 +28,7 @@ export const PracticeStep2Container = styled.div`
 
 export const PracticeWrapper = styled.div`
   display: flex;
-  width: 1124px;
+  width: 100%;
   flex-direction: column;
   align-items: flex-end;
   gap: 24px;
@@ -57,29 +59,62 @@ export const Timer = styled.p`
 export const ChattingWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  height: 469px;
+  height: clamp(420px, 56vh, 560px);
   align-self: stretch;
-  padding: 25px 0;
-  border-radius: 12px;
-  border: 1px solid ${({ theme }) => theme.colors.secondary["07"]};
-  background-color: ${({ theme }) => theme.colors.grayScale["11"]};
-  gap: 15px;
+  padding: 24px clamp(16px, 3vw, 28px);
+  border-radius: 16px;
+  border: 1px solid ${({ theme }) => theme.colors.grayScale["08"]};
+  background-color: ${({ theme }) => theme.colors.grayScale["10"]};
+  gap: 18px;
   overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: ${({ theme }) => theme.colors.grayScale["08"]};
+    border-radius: 8px;
+  }
+`;
+
+/** AI 메시지 한 줄: 아바타 + 말풍선 */
+export const AIChatRow = styled.div`
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  align-self: flex-start;
+  max-width: 82%;
+`;
+
+export const InterviewerAvatar = styled.div`
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: ${({ theme }) => theme.radius.full};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  background: linear-gradient(
+    150deg,
+    ${({ theme }) => theme.colors.primaryScale["500"]},
+    ${({ theme }) => theme.colors.primaryScale["700"]}
+  );
 `;
 
 export const AIChatBox = styled.div`
   display: flex;
-  padding: 16px;
-  justify-content: center;
+  padding: 14px 18px;
   align-items: center;
-  border-radius: 16px 16px 16px 0;
-  background-color: ${({ theme }) => theme.colors.secondary["08"]};
-  align-self: flex-start;
-  max-width: 80%;
+  border-radius: 4px 18px 18px 18px;
+  background-color: ${({ theme }) => theme.colors.grayScale["11"]};
+  border: 1px solid ${({ theme }) => theme.colors.grayScale["08"]};
+  box-shadow: ${({ theme }) => theme.shadows.xs};
 `;
 
 export const AIChatText = styled.div`
-  ${({ theme }) => theme.typography.body.L1};
+  ${({ theme }) => theme.typography.body.M0};
+  line-height: 1.55;
   color: ${({ theme }) => theme.colors.grayScale["00"]};
 `;
 
@@ -108,44 +143,61 @@ export const TypingIndicator = styled.div`
 
 export const UserChatBox = styled.div`
   display: flex;
-  padding: 16px;
-  justify-content: center;
+  padding: 14px 18px;
   align-items: center;
-  border-radius: 16px 16px 0 16px;
-  background-color: ${({ theme }) => theme.colors.secondary["06"]};
+  border-radius: 18px 4px 18px 18px;
+  background-color: ${({ theme }) => theme.colors.primary["00"]};
   align-self: flex-end;
-  max-width: 80%;
+  max-width: 82%;
+  box-shadow: 0 4px 12px -4px rgba(90, 92, 245, 0.45);
 `;
 
 export const UserChatText = styled.div`
-  ${({ theme }) => theme.typography.body.L0};
+  ${({ theme }) => theme.typography.body.M0};
+  line-height: 1.55;
   color: ${({ theme }) => theme.colors.grayScale["11"]};
 `;
 
 export const AnswerButtonBox = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: stretch;
   align-self: stretch;
+  gap: 12px;
+
+  @media (max-width: 520px) {
+    flex-direction: column;
+  }
 `;
 
 export const AnswerBox = styled.div`
+  flex: 1;
+  min-width: 0;
   display: flex;
-  padding: 19px 21px 19px 24px;
-  justify-content: center;
+  padding: 4px 8px 4px 20px;
   align-items: center;
-  gap: 37px;
-  border-radius: 12px;
-  border: 1px solid ${({ theme }) => theme.colors.secondary["07"]};
+  gap: 12px;
+  border-radius: ${({ theme }) => theme.radius.md};
+  border: 1px solid ${({ theme }) => theme.colors.grayScale["08"]};
   background-color: ${({ theme }) => theme.colors.grayScale["11"]};
+  transition: ${({ theme }) => theme.transitions.fast};
+
+  &:focus-within {
+    border-color: ${({ theme }) => theme.colors.primary["00"]};
+    box-shadow: ${({ theme }) => theme.shadows.focus};
+  }
 `;
 
 export const AnswerInput = styled.input`
-  width: 826px;
-  height: 44px;
-  ${({ theme }) => theme.typography.head.H3};
-  color: ${({ theme }) => theme.colors.grayScale["05"]};
+  width: 100%;
+  height: 52px;
+  ${({ theme }) => theme.typography.body.M0};
+  color: ${({ theme }) => theme.colors.grayScale["00"]};
   border: none;
   outline: none;
   background: transparent;
+
+  &::placeholder {
+    color: ${({ theme }) => theme.colors.grayScale["05"]};
+  }
 `;

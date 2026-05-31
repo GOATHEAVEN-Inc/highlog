@@ -9,6 +9,7 @@ import {
   logout,
   refreshTokens,
   requestEmailVerify,
+  resetPassword,
   signUp,
 } from "./authApi";
 import { tokenStorage } from "@/lib/tokenStorage";
@@ -16,6 +17,7 @@ import type {
   EmailConfirmRequest,
   EmailVerifyRequest,
   LoginVariables,
+  PasswordResetRequest,
   RefreshRequest,
   SignUpRequest,
 } from "./authTypes";
@@ -24,6 +26,7 @@ import type {
   EmailVerifyResponse,
   LoginResponse,
   LogoutResponse,
+  PasswordResetResponse,
   RefreshResponse,
   SignUpResponse,
 } from "./authTypes";
@@ -91,6 +94,16 @@ export function useLogout(
       }
       return logout({ refreshToken }, accessToken);
     },
+    ...options,
+  });
+}
+
+// 1-7. 비밀번호 재설정
+export function useResetPassword(
+  options?: UseMutationOptions<PasswordResetResponse, Error, PasswordResetRequest>
+): UseMutationResult<PasswordResetResponse, Error, PasswordResetRequest> {
+  return useMutation({
+    mutationFn: resetPassword,
     ...options,
   });
 }

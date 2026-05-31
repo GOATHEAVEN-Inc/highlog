@@ -4,8 +4,9 @@ export const GuideTrySectionContainer = styled.section`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  min-width: 1200px;
-  height: 123px;
+  flex-wrap: wrap;
+  gap: 16px;
+  width: 100%;
   padding: 40px 0;
   box-sizing: border-box;
 `;

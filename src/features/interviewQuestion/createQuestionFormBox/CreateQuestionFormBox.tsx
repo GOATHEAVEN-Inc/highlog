@@ -50,10 +50,7 @@ const CreateQuestionFormBox = forwardRef<
 
   const handleTitleChange = (value: string) => {
     setTitle(value);
-    if (!value.trim()) {
-      setSchool("");
-      setDepartment("");
-    }
+    // 학교/학과는 선택 필드라 제목 비움에 따라 자동으로 지우지 않음.
   };
 
   const handleSchoolChange = (value: string) => {
@@ -135,24 +132,23 @@ const CreateQuestionFormBox = forwardRef<
         <S.FormFieldGroup>
           <S.SchoolDepartmentRow>
             <S.DropDownGroup>
-              <S.FormFieldRowLabel>지원하는 학교</S.FormFieldRowLabel>
+              <S.FormFieldRowLabel>지원하는 학교 (선택)</S.FormFieldRowLabel>
               <FilterableFieldSelect
                 width="340px"
                 options={SCHOOL_OPTIONS}
                 value={school}
                 setValue={handleSchoolChange}
-                placeholder="학교를 입력해 주세요"
-                disabled={!title.trim()}
+                placeholder="입력하지 않아도 괜찮아요"
               />
             </S.DropDownGroup>
             <S.DropDownGroup>
-              <S.FormFieldRowLabel>학과</S.FormFieldRowLabel>
+              <S.FormFieldRowLabel>학과 (선택)</S.FormFieldRowLabel>
               <FilterableFieldSelect
                 width="340px"
                 options={departmentOptions}
                 value={department}
                 setValue={setDepartment}
-                placeholder="학과를 입력해 주세요"
+                placeholder="입력하지 않아도 괜찮아요"
                 disabled={!school}
               />
             </S.DropDownGroup>
@@ -160,7 +156,7 @@ const CreateQuestionFormBox = forwardRef<
         </S.FormFieldGroup>
         <S.FormFieldGroup>
           <S.ApplicationTypeSection>
-            <S.FormFieldRowLabel>면접 전형</S.FormFieldRowLabel>
+            <S.FormFieldRowLabel>면접 전형 (선택)</S.FormFieldRowLabel>
             <S.ApplicationTypeContent>
               <S.ApplicationTypeRow>
                 {APPLICATION_TYPE_OPTIONS.slice(0, 3).map((option) => (
@@ -216,7 +212,7 @@ const CreateQuestionFormBox = forwardRef<
                     text="업로드하러 가기"
                     onClick={() => {
                       setIsSchoolRecordHintOpen(false);
-                      navigate("/record_management/upload");
+                      navigate("/onboard");
                     }}
                   />
                 </S.SchoolRecordHintPopoverButtonWrap>
@@ -265,7 +261,7 @@ const CreateQuestionFormBox = forwardRef<
         leftButtonText="닫기"
         rightButtonText="업로드 하기"
         onLeftButtonClick={() => onBackToMain?.()}
-        onRightButtonClick={() => navigate("/record_management/upload")}
+        onRightButtonClick={() => navigate("/onboard")}
       />
     </S.CreateFormBox>
   );

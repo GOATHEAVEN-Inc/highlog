@@ -52,7 +52,7 @@ export default function LoginForm({ onSubmit }: LoginFormProps) {
           type="button"
           onClick={() => navigate("/auth/find-password")}
         >
-          회원가입
+          비밀번호 찾기
         </S.AuthUnderBarButton>
       </S.KeepLoginRow>
       <S.SubmitButtonWrapper>

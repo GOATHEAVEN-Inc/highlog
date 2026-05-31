@@ -8,6 +8,8 @@ import type {
   LoginResponse,
   LogoutRequest,
   LogoutResponse,
+  PasswordResetRequest,
+  PasswordResetResponse,
   RefreshRequest,
   RefreshResponse,
   SignUpRequest,
@@ -69,5 +71,15 @@ export async function logout(
     method: "POST",
     body: JSON.stringify(body),
     accessToken,
+  });
+}
+
+// 1-7. 비밀번호 재설정 (인증번호 발송/확인은 1-1, 1-2 재사용)
+export async function resetPassword(
+  body: PasswordResetRequest
+): Promise<PasswordResetResponse> {
+  return apiClient<PasswordResetResponse>("/api/auth/password/reset", {
+    method: "POST",
+    body: JSON.stringify(body),
   });
 }

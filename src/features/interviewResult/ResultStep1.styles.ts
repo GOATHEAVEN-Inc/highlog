@@ -9,7 +9,9 @@ export const Step1Container = styled.div`
 
 export const TitleBox = styled.div`
   display: flex;
-  width: 1200px;
+  width: 100%;
+  max-width: 1200px;
+  box-sizing: border-box;
   justify-content: space-between;
   align-items: center;
 `;
@@ -18,8 +20,10 @@ export const ResultWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 32px;
-  width: 1200px;
-  padding: 48px 72px;
+  width: 100%;
+  max-width: 1200px;
+  box-sizing: border-box;
+  padding: 48px clamp(24px, 4vw, 72px);
   justify-content: center;
   align-items: flex-start;
   border-radius: 12px;
@@ -158,7 +162,7 @@ export const Wrapper = styled.div`
 
 export const LableBox = styled.div`
   display: flex;
-  width: 1056px;
+  width: 100%;
   height: 54px;
   padding: 12px 44px 12px 32px;
   justify-content: space-between;
@@ -188,7 +192,7 @@ export const SetBox = styled.div`
 
 export const QuestionBox = styled.div`
   display: flex;
-  width: 1056px;
+  width: 100%;
   min-height: 78px;
   padding: 16px 32px;
   align-items: center;
@@ -256,7 +260,7 @@ export const ReplayList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
-  width: 1056px;
+  width: 100%;
 `;
 
 export const ReplayItem = styled.div`
@@ -302,7 +306,7 @@ export const UserChatText = styled.div`
 export const SettingsContainer = styled.div`
   display: flex;
   gap: 10px;
-  width: 1056px;
+  width: 100%;
   flex-wrap: wrap;
 `;
 

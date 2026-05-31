@@ -31,6 +31,11 @@ const StyleReset = createGlobalStyle`
   footer, header, hgroup, menu, nav, section {
     display: block;
   }
+  html, body {
+    /* 어떤 자식 요소가 viewport보다 넓어도 모바일에서 가로 스크롤이 생기지 않도록 */
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
+  }
   body {
     line-height: 1;
   }

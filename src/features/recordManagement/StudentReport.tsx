@@ -93,7 +93,7 @@ export default function StudentReport() {
                 width={166}
                 type="primary"
                 text="생기부 추가하기"
-                onClick={() => navigate("upload")}
+                onClick={() => navigate("/onboard")}
               />
             </S.SearchBox>
           </S.SearchBlock>
@@ -134,7 +134,7 @@ export default function StudentReport() {
               width={174}
               type="primary"
               text="생기부 추가하기"
-              onClick={() => navigate("upload")}
+              onClick={() => navigate("/onboard")}
             />
           </EmptyState>
         </S.EmptyReportWrapper>

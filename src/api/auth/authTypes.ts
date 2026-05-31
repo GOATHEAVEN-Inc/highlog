@@ -76,3 +76,14 @@ export interface LogoutRequest {
 export interface LogoutResponse {
   message: string;
 }
+
+// 1-7. 비밀번호 재설정
+export interface PasswordResetRequest {
+  email: string;
+  code: string;
+  newPassword: string;
+}
+
+export interface PasswordResetResponse {
+  message: string;
+}

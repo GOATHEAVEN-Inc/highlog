@@ -67,28 +67,12 @@ export default function ShowQuestionsResult() {
 
   const setId = useMemo(() => {
     if (!recordDetail?.questionSets || !title) {
-      console.log("[setId 매칭] 실패 - 조건 미충족", {
-        hasRecordDetail: !!recordDetail,
-        questionSets: recordDetail?.questionSets,
-        title,
-      });
       return undefined;
     }
     const questionSets = recordDetail.questionSets;
     const matched = questionSets.find((qs) => qs.title === title);
     const fallback = questionSets.at(-1);
-    const resolvedSetId = matched?.id ?? fallback?.id;
-
-    console.log("[setId 매칭]", {
-      검색_title: title,
-      questionSets_목록: questionSets.map((qs) => ({ id: qs.id, title: qs.title })),
-      title_일치: !!matched,
-      matched_questionSet: matched ?? null,
-      fallback_마지막항목: fallback ?? null,
-      최종_setId: resolvedSetId,
-    });
-
-    return resolvedSetId;
+    return matched?.id ?? fallback?.id;
   }, [recordDetail, title]);
 
   const {
@@ -104,26 +88,12 @@ export default function ShowQuestionsResult() {
     }
   }, [recordId, title, navigate]);
 
-  const filteredByCategory = questions.filter(
+  const displayQuestions = questions.filter(
     (q) => q.category === activeTab.category
   );
-  const displayQuestions = filteredByCategory.slice(0, 4);
   const cardPropsList = displayQuestions.map(mapQuestionToCardProps);
   const isLoading =
     isRecordLoading || !setId || (!!setId && isQuestionsLoading);
-
-  console.log("[질문 결과 페이지]", {
-    recordId,
-    title,
-    setId,
-    activeTab: activeTab.category,
-    recordDetail: recordDetail?.questionSets,
-    questionsCount: questions.length,
-    displayQuestionsCount: displayQuestions.length,
-    isRecordLoading,
-    isQuestionsLoading,
-    isLoading,
-  });
 
   if (!recordId || !title) {
     return null;
@@ -136,22 +106,28 @@ export default function ShowQuestionsResult() {
           <Title text="질문 생성" />
         </S.TitleWrapper>
         <S.Description>
-          하이로그의 면접 예상 질문은 대입 전형용 생활기록부를 기반으로
+          고트면접의 면접 예상 질문은 대입 전형용 생활기록부를 기반으로
         </S.Description>
         <S.Description>
           총 5개 영역(성적, 세특, 창체, 행특, 기타)의 예상 질문을 받아볼 수 있어요
         </S.Description>
       </S.HeaderSection>
       <S.TabContainer>
-        {TAB_CONFIG.map((tab) => (
-          <S.TabItem
-            key={tab.category}
-            $isActive={activeTab.category === tab.category}
-            onClick={() => setActiveTab(tab)}
-          >
-            {tab.label}
-          </S.TabItem>
-        ))}
+        {TAB_CONFIG.map((tab) => {
+          const count = questions.filter(
+            (q) => q.category === tab.category
+          ).length;
+          return (
+            <S.TabItem
+              key={tab.category}
+              $isActive={activeTab.category === tab.category}
+              onClick={() => setActiveTab(tab)}
+            >
+              {tab.label}
+              {count > 0 ? ` (${count})` : ""}
+            </S.TabItem>
+          );
+        })}
       </S.TabContainer>
       <S.QuestionList key={activeTab.category}>
         {isLoading ? (
@@ -169,6 +145,10 @@ export default function ShowQuestionsResult() {
               <LoadingCard />
             </S.QuestionCardWrapper>
           </>
+        ) : cardPropsList.length === 0 ? (
+          <S.EmptyState>
+            이 항목에는 아직 생성된 질문이 없어요.
+          </S.EmptyState>
         ) : (
           cardPropsList.map((props, i) => {
             const q = displayQuestions[i];

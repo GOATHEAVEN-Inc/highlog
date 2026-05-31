@@ -121,4 +121,15 @@ export const AuthPrimaryButton = styled.button`
   ${({ theme }) => theme.typography.body.M2};
   cursor: pointer;
   box-sizing: border-box;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+`;
+
+export const ErrorText = styled.p`
+  margin: 8px 0 0;
+  color: ${({ theme }) => theme.colors.labelColor["06"]};
+  ${({ theme }) => theme.typography.body.S0};
 `;

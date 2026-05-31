@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const RecordCardContainer = styled.div`
-  width: 1200px;
+  width: 100%;
   height: 80px;
   background-color: ${({ theme }) => theme.colors.grayScale["11"]};
   border: 0.5px solid ${({ theme }) => theme.colors.secondary["07"]};

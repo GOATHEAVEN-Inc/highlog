@@ -8,6 +8,13 @@ export const DifferentSectionContainer = styled.section`
   justify-content: center;
   position: relative;
   padding-top: 236px;
+
+  @media (max-width: 1024px) {
+    height: auto;
+    padding: 48px 20px 56px;
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 export const MainTitle = styled.p`
@@ -17,6 +24,14 @@ export const MainTitle = styled.p`
   position: absolute;
   left: 184px;
   top: 80px;
+
+  @media (max-width: 1024px) {
+    position: static;
+    text-align: center;
+    font-size: 22px;
+    line-height: 1.4;
+    margin-bottom: 32px;
+  }
 `;
 
 export const MainTitleBlue = styled.span`
@@ -28,6 +43,12 @@ export const DifferentWrapper = styled.div`
   display: flex;
   gap: 52px;
   align-items: center;
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    width: 100%;
+    gap: 24px;
+  }
 `;
 
 export const BeforeBox = styled.div`
@@ -36,6 +57,11 @@ export const BeforeBox = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 24px;
+
+  @media (max-width: 1024px) {
+    width: 100%;
+    max-width: 360px;
+  }
 `;
 
 export const BeforeText = styled.p`
@@ -79,6 +105,11 @@ export const PolygonBox = styled.div`
   flex-direction: column;
   gap: 73px;
   padding-top: 50px;
+
+  @media (max-width: 1024px) {
+    /* 모바일에선 화살표(폴리곤 4개)는 너무 자리 차지하니 숨김 */
+    display: none;
+  }
 `;
 
 export const AfterBox = styled.div`
@@ -88,6 +119,12 @@ export const AfterBox = styled.div`
   align-items: center;
   gap: 24px;
   margin-bottom: 62px;
+
+  @media (max-width: 1024px) {
+    width: 100%;
+    max-width: 360px;
+    margin-bottom: 0;
+  }
 `;
 
 export const AfterTextBox = styled.div`

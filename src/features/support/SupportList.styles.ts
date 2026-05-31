@@ -22,7 +22,8 @@ export const Header = styled.div`
 
 export const TextBox = styled.div`
   display: flex;
-  width: 1040px;
+  width: 100%;
+  box-sizing: border-box;
   justify-content: space-between;
   align-items: center;
 `;
@@ -57,7 +58,8 @@ export const ListBox = styled.div`
 
 export const ListBoxTextWrapper = styled.div`
   display: flex;
-  width: 1040px;
+  width: 100%;
+  box-sizing: border-box;
   justify-content: space-between;
   align-items: center;
 `;

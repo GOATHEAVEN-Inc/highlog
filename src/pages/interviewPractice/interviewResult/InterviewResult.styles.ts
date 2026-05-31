@@ -1,12 +1,15 @@
 import styled from "styled-components";
+import { headerAlignedPadding } from "@/styles/layout";
 
 export const InterviewResultContainer = styled.div`
   display: flex;
   width: 100%;
-  min-width: 1440px;
+  box-sizing: border-box;
   flex-direction: column;
   align-items: center;
-  padding: 96px 0;
+  padding-top: 64px;
+  padding-bottom: 96px;
   gap: 96px;
   background-color: ${({ theme }) => theme.colors.grayScale["10"]};
+  ${headerAlignedPadding}
 `;

@@ -13,7 +13,6 @@ export default function PracticeStep2ChatList({
   const chatContainerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    console.log("messages", messages);
     if (!chatContainerRef.current) {
       return;
     }
@@ -28,19 +27,22 @@ export default function PracticeStep2ChatList({
     <S.ChattingWrapper ref={chatContainerRef}>
       {messages.map((msg) =>
         msg.sender === "AI" ? (
-          <S.AIChatBox key={msg.id}>
-            <S.AIChatText>
-              {msg.state === "pending" ? (
-                <S.TypingIndicator>
-                  <span />
-                  <span />
-                  <span />
-                </S.TypingIndicator>
-              ) : (
-                <TypeWriter text={msg.text} />
-              )}
-            </S.AIChatText>
-          </S.AIChatBox>
+          <S.AIChatRow key={msg.id}>
+            <S.InterviewerAvatar aria-hidden>🐐</S.InterviewerAvatar>
+            <S.AIChatBox>
+              <S.AIChatText>
+                {msg.state === "pending" ? (
+                  <S.TypingIndicator>
+                    <span />
+                    <span />
+                    <span />
+                  </S.TypingIndicator>
+                ) : (
+                  <TypeWriter text={msg.text} />
+                )}
+              </S.AIChatText>
+            </S.AIChatBox>
+          </S.AIChatRow>
         ) : (
           <S.UserChatBox key={msg.id}>
             <S.UserChatText>{msg.text}</S.UserChatText>

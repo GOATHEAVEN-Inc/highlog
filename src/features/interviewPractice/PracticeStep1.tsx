@@ -61,24 +61,19 @@ export default function PracticeStep1({
   ];
   const modeOptions = [
     { label: "텍스트", value: "text" },
-    { label: "음성", value: "audio" },
+    { label: "음성", value: "voice" },
   ];
 
   const handleStart = () => {
     const selectedReport = reportOptions.find((opt) => opt.label === report);
     const selectedLevel = levelOptions.find((opt) => opt.label === level);
-    const selectedMode = modeOptions.find((opt) => opt.label === mode); // Should always be "텍스트"
+    const selectedMode = modeOptions.find((opt) => opt.label === mode);
 
-    if (
-      !selectedReport ||
-      !selectedLevel ||
-      !selectedMode ||
-      !univ ||
-      !department
-    ) {
+    // 학교/학과는 선택 필드. 생기부·난이도·모드만 필수.
+    if (!selectedReport || !selectedLevel || !selectedMode) {
       setModalMessage({
         mainTitle: "선택하지 않은 항목이 있어요",
-        subTitle: "필수 항목을 선택한 뒤 다시 시작해 주세요",
+        subTitle: "생기부·난이도·모드를 선택한 뒤 다시 시작해 주세요",
       });
       setIsModalOpen(true);
       return;
@@ -89,7 +84,6 @@ export default function PracticeStep1({
       selectedLevel.value as "Easy" | "Normal" | "Hard",
       univ,
       department,
-
       selectedMode.value as "text" | "voice",
     );
   };
@@ -98,7 +92,6 @@ export default function PracticeStep1({
     setIsModalOpen(false);
   };
 
-  // Handle record list loading/error states
   if (isRecordListLoading) {
     return (
       <S.Practice1Container>
@@ -162,12 +155,12 @@ export default function PracticeStep1({
             </S.TopBox>
             <S.TopBox>
               <S.TitleSelect>
-                <S.Title>지원하는 학교</S.Title>
+                <S.Title>지원하는 학교 (선택)</S.Title>
                 <S.DropDownWrapper>
                   <DropDown
                     width="340px"
                     options={SCHOOL_OPTIONS}
-                    placeholder="대학교를 선택해 주세요"
+                    placeholder="선택하지 않아도 괜찮아요"
                     value={univ}
                     setValue={(value) => {
                       setUniv(value);
@@ -177,12 +170,12 @@ export default function PracticeStep1({
                 </S.DropDownWrapper>
               </S.TitleSelect>
               <S.TitleSelect>
-                <S.Title>학과</S.Title>
+                <S.Title>학과 (선택)</S.Title>
                 <S.DropDownWrapper>
                   <DropDown
                     width="340px"
                     options={departmentOptions}
-                    placeholder="학과를 선택해 주세요"
+                    placeholder="선택하지 않아도 괜찮아요"
                     value={department}
                     setValue={setDepartment}
                     disabled={!univ}

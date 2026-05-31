@@ -4,6 +4,7 @@ import * as S from "@/pages/interviewQuestions/loadingQuestions/loadingQuestions
 import QuestionGeneratingLoading from "@/components/loading/QuestionGeneratingLoading";
 import LoadingCard from "@/components/card/LoadingCard";
 import { useGenerateQuestions } from "@/api/question/useGenerateQuestionsApi";
+import { QUESTIONS_PER_CATEGORY_DEFAULT } from "@/api/question/questionTypes";
 import type { CreateQuestionFormData } from "@/features/interviewQuestion/types/createQuestion";
 
 export default function LoadingQuestions() {
@@ -40,6 +41,8 @@ export default function LoadingQuestions() {
         target_school: formData.school,
         target_major: formData.department,
         interview_type: formData.applicationType,
+        questions_per_category:
+          formData.questionsPerCategory ?? QUESTIONS_PER_CATEGORY_DEFAULT,
       },
       onProgress: setPercent,
     });

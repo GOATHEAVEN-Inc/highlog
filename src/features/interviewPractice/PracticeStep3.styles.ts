@@ -2,7 +2,9 @@ import styled from "styled-components";
 
 export const PracticeStep3Container = styled.div`
   display: flex;
-  width: 1200px;
+  width: 100%;
+  max-width: 1200px;
+  box-sizing: border-box;
   flex-direction: column;
   align-items: flex-start;
   gap: 48px;
@@ -39,7 +41,7 @@ export const FeedBackList = styled.div`
 
 export const FeedBackBox = styled.div`
   display: flex;
-  width: 1041px;
+  width: 100%;
   height: 182px;
   border-radius: 12px;
   border: 1px solid ${({ theme }) => theme.colors.secondary["07"]};

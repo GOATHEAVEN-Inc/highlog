@@ -3,7 +3,6 @@ import { Link as RouterLink } from "react-router-dom";
 
 export const FooterContainer = styled.footer`
   width: 100%;
-  min-width: 1440px;
   background-color: ${({ theme }) => theme.colors.secondary["03"]};
 `;
 
@@ -13,6 +12,13 @@ export const FooterContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+
+  @media (max-width: 1024px) {
+    padding: 40px 24px 48px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+  }
 `;
 
 export const LeftSection = styled.div`
@@ -42,6 +48,11 @@ export const RightSection = styled.div`
   flex-direction: column;
   align-items: flex-end;
   gap: 16px;
+
+  @media (max-width: 1024px) {
+    width: 100%;
+    align-items: flex-start;
+  }
 `;
 
 export const SocialIcons = styled.div`

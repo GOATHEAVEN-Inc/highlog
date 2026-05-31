@@ -7,6 +7,10 @@ export const InfoSectionContainer = styled.section`
     justify-content: center;
     align-items: center;
     background: radial-gradient(167.57% 167.57% at 50% 50%, #6668FF 0%, #3F41F2 100%);
+
+    @media (max-width: 1024px) {
+        padding: 56px 24px;
+    }
 `;
 
 export const IconTitleWrapper = styled.div`
@@ -16,6 +20,11 @@ export const IconTitleWrapper = styled.div`
     align-items: center;
     gap: 24px;
     flex-shrink: 0;
+
+    @media (max-width: 1024px) {
+        width: 100%;
+        gap: 16px;
+    }
 `;
 
 export const IconBox = styled.div`
@@ -48,4 +57,10 @@ export const Title = styled.p`
     color: #fff;
     text-align: center;
     white-space: nowrap;
+
+    @media (max-width: 1024px) {
+        font-size: 22px;
+        line-height: 1.35;
+        white-space: normal;
+    }
 `;

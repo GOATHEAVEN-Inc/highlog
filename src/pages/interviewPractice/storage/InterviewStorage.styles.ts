@@ -1,18 +1,21 @@
 import styled from "styled-components";
+import { headerAlignedPadding } from "@/styles/layout";
 
 export const Container = styled.div`
   width: 100%;
-  min-width: 1440px;
-  height: 100%;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 96px;
+  padding-top: 64px;
   padding-bottom: 96px;
+  ${headerAlignedPadding}
 `;
 
 export const Wrapper = styled.div`
-  width: 1200px;
+  width: 100%;
+  max-width: 1600px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 44px;

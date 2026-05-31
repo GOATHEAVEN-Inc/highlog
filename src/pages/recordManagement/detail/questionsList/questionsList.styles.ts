@@ -1,20 +1,23 @@
 import styled from "styled-components";
+import { headerAlignedPadding } from "@/styles/layout";
 
 export const questionsListContainer = styled.div`
     width: 100%;
-    min-width: 1440px;
-    height: 100%;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 96px;
+    padding-top: 64px;
     padding-bottom: 96px;
     gap: 96px;
+    ${headerAlignedPadding}
 `;
 
 export const questionsListWrapper = styled.div`
     display: flex;
-    width: 1200px;
+    width: 100%;
+    max-width: 1600px;
+    box-sizing: border-box;
     flex-direction: column;
     align-items: flex-start;
     gap: 48px;
@@ -72,7 +75,7 @@ export const TypeBox = styled.div`
 
 export const QuestionTabBox = styled.div`
     display: flex;
-    width: 1200px;
+    width: 100%;
     padding: 8px 0;
     flex-direction: column;
     align-items: flex-start;

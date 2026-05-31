@@ -3,7 +3,8 @@ import UP_ACODIAN from "@/assets/icons/acodian.svg?react";
 
 export const FaqContainer = styled.div`
   width: 100%;
-  width: 1200px;
+  width: 100%;
+  box-sizing: border-box;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -22,7 +23,8 @@ export const FaqList = styled.div<{ $isOpen: boolean }>`
 
 export const ContentBox = styled.div`
   display: flex;
-  width: 1040px;
+  width: 100%;
+  box-sizing: border-box;
   justify-content: space-between;
   align-items: center;
 `;
@@ -59,7 +61,8 @@ export const Acodian = styled(UP_ACODIAN)<{ $isOpen: boolean }>`
 
 export const AnswerBox = styled.div<{ $isOpen: boolean }>`
   display: flex;
-  width: 1200px;
+  width: 100%;
+  box-sizing: border-box;
   justify-content: center;
   align-items: center;
   background: #f6f6fb;

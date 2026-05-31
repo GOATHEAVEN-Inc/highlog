@@ -1,4 +1,4 @@
-import { ApiErrorException, BASE_URL } from "@/api/client";
+import { ApiErrorException, resolveBaseUrl } from "@/api/client";
 import { tokenStorage } from "@/lib/tokenStorage";
 import type {
   GenerateQuestionsRequest,
@@ -12,7 +12,7 @@ export async function generateQuestionsAndStream(
 ): Promise<void> {
   const accessToken = tokenStorage.getAccessToken();
   const response = await fetch(
-    `${BASE_URL}/ai/records/${recordId}/generate-questions`,
+    `${resolveBaseUrl("/ai/records/")}/ai/records/${recordId}/generate-questions`,
     {
       method: "POST",
       headers: {
@@ -73,7 +73,6 @@ export async function generateQuestionsAndStream(
               continue;
             }
             const event = JSON.parse(json) as GenerateQuestionsSSEEvent;
-            console.log("[SSE Event]", event);
             onProgress?.(event.progress);
             if (event.type === "complete") {
               return;
@@ -97,7 +96,6 @@ export async function generateQuestionsAndStream(
               const json = trimmed.slice(5).trim();
               if (json) {
                 const event = JSON.parse(json) as GenerateQuestionsSSEEvent;
-                console.log("[SSE Final Event]", event);
                 onProgress?.(event.progress);
                 if (event.type === "complete") {
                   return;

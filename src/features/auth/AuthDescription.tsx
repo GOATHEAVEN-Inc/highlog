@@ -1,4 +1,3 @@
-import { DefaultButton } from "@/components/button/Button";
 import { AUTH_DESCRIPTION, AUTH_FEATURE_BLOCKS } from "@/constants/auth";
 import * as S from "@/features/auth/AuthDescription.styles";
 import FileQuestionIcon from "@/assets/icons/file-question-01.svg?react";
@@ -19,6 +18,9 @@ export default function AuthDescription() {
           <h2 key={heading}>{heading}</h2>
         ))}
       </S.TextBlock>
+      <S.SubText>
+        생기부만 올리면 AI가 100개 이상의 예상 질문과 모범답안을 만들어 드려요.
+      </S.SubText>
       <S.FeatureBlocksWrapper>
         {AUTH_FEATURE_BLOCKS.map((block, index) => {
           const Icon = AUTH_FEATURE_ICONS[index];
@@ -34,13 +36,6 @@ export default function AuthDescription() {
           );
         })}
       </S.FeatureBlocksWrapper>
-      <S.ButtonWrapper>
-        <DefaultButton
-          width={174}
-          type="secondary"
-          text={AUTH_DESCRIPTION.sampleButtonText}
-        />
-      </S.ButtonWrapper>
     </S.Wrapper>
   );
 }

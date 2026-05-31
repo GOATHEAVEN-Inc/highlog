@@ -1,19 +1,23 @@
 import styled from "styled-components";
+import { headerAlignedPadding } from "@/styles/layout";
 
 export const RecordDetailContainer = styled.div`
     width: 100%;
-    min-width: 1440px;
-    height: 100%;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 96px;
+    padding-top: 64px;
     padding-bottom: 96px;
     gap: 96px;
+    ${headerAlignedPadding}
 `;
 
 export const DetailBox = styled.div`
     display: flex;
+    width: 100%;
+    max-width: 1600px;
+    box-sizing: border-box;
     flex-direction: column;
     align-items: flex-start;
     gap: 24px;
@@ -33,8 +37,9 @@ export const MainTitle = styled.p`
 
 export const RecordDetailWrapper = styled.div`
     display: flex;
-    width: 1200px;
-    padding: 48px 72px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 48px clamp(24px, 4vw, 72px);
     flex-direction: column;
     align-items: flex-start;
     gap: 48px;
@@ -157,6 +162,7 @@ export const QuestionTitle = styled.p`
 
 export const QuestionBox = styled.div`
     display: flex;
+    width: 100%;
     flex-direction: column;
     align-items: flex-start;
     gap: 16px;

@@ -16,16 +16,28 @@ export const QuestionCardTop = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+  gap: 12px;
   box-sizing: border-box;
+
+  @media (max-width: 640px) {
+    padding: 16px;
+  }
 `;
 
 export const QuestionCardLeft = styled.div`
   display: flex;
   align-items: flex-start;
-  gap: 32px;
+  gap: 20px;
   flex: 1;
   min-width: 0;
   padding-right: 24px;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding-right: 0;
+  }
 `;
 
 export const QuestionCardText = styled.p`
@@ -34,6 +46,12 @@ export const QuestionCardText = styled.p`
   flex: 1;
   word-break: keep-all;
   overflow-wrap: break-word;
+
+  @media (max-width: 640px) {
+    width: 100%;
+    font-size: 18px;
+    line-height: 27px;
+  }
 `;
 
 export const QuestionCardBottom = styled.div`
@@ -68,6 +86,12 @@ export const QuestionCardDetailsSection = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  gap: 16px;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    gap: 20px;
+  }
 `;
 
 export const QuestionCardDetailsLeft = styled.div`
@@ -84,6 +108,15 @@ export const QuestionCardDetailsRight = styled.div`
   align-items: flex-start;
   margin-top: 11px;
   flex-shrink: 0;
+
+  @media (max-width: 640px) {
+    margin-top: 0;
+    width: 100%;
+
+    & > * {
+      width: 100% !important;
+    }
+  }
 `;
 
 export const QuestionPurposeRow = styled.div`

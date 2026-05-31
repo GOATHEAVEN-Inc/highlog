@@ -1,7 +1,35 @@
 import { tokenStorage } from "@/lib/tokenStorage";
 import { invokeAuthFailure } from "@/lib/authFailureCallback";
 
-export const BASE_URL = import.meta.env.VITE_API_URL;
+/**
+ * BASE_URL: 단일 도메인(nginx + path routing) 환경에서 사용.
+ * 로컬 개발은 빈 문자열 → Vite proxy(`/api` → 8080, `/ai` → 8000)가 처리.
+ */
+const LEGACY_BASE = import.meta.env.VITE_API_URL ?? "";
+
+/**
+ * Production에서는 Spring과 FastAPI가 서로 다른 도메인일 수 있어
+ * path prefix에 따라 base를 분기한다. 미설정 시 LEGACY_BASE로 fallback.
+ *   - VITE_SPRING_API_URL: `/api/*`, `/auth/*` 등 Spring 라우트
+ *   - VITE_AI_API_URL:     `/ai/*` 로 시작하는 FastAPI 라우트
+ */
+const SPRING_BASE: string =
+  (import.meta.env.VITE_SPRING_API_URL as string | undefined) ?? LEGACY_BASE;
+const AI_BASE: string =
+  (import.meta.env.VITE_AI_API_URL as string | undefined) ?? LEGACY_BASE;
+
+/** path prefix에 따라 적절한 base URL을 반환. */
+export function resolveBaseUrl(path: string): string {
+  if (path.startsWith("/ai/") || path === "/ai") return AI_BASE;
+  return SPRING_BASE;
+}
+
+/**
+ * 호환을 위한 기존 export. 새 코드에서는 `resolveBaseUrl(path)`를 권장.
+ * 단일 BASE_URL 사용처는 path를 알 수 없으므로 SPRING_BASE를 가리킨다 —
+ * 그 경우 호출부가 `/ai/*` 경로면 직접 AI_BASE 또는 resolveBaseUrl을 써야 함.
+ */
+export const BASE_URL = SPRING_BASE;
 
 export interface ApiError {
   code: string;
@@ -105,14 +133,17 @@ export async function apiClient<T>(
   const { accessToken: explicitToken, ...init } = options;
   const accessToken = explicitToken ?? tokenStorage.getAccessToken();
 
-  const headers: HeadersInit = {
+  const headers: Record<string, string> = {
     "Content-Type": "application/json",
-    ...(init.headers as Record<string, string>),
+    ...(init.headers as Record<string, string> || {}),
   };
 
+  if (init.body instanceof FormData) {
+    delete headers["Content-Type"];
+  }
+
   if (accessToken) {
-    (headers as Record<string, string>)["Authorization"] =
-      `Bearer ${accessToken}`;
+    headers["Authorization"] = `Bearer ${accessToken}`;
   }
 
   const response = await fetch(`${BASE_URL}${endpoint}`, {

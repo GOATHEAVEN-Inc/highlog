@@ -3,15 +3,19 @@ import styled from "styled-components";
 export const Form = styled.form`
   display: flex;
   flex-direction: column;
-  padding: 0 18px;
+  padding: 0 32px;
   box-sizing: border-box;
+
+  @media (max-width: 520px) {
+    padding: 0 20px;
+  }
 `;
 
 export const SignUpTitle = styled.h4`
   ${({ theme }) => theme.typography.head.H4};
   line-height: 32px;
   color: ${({ theme }) => theme.colors.grayScale["00"]};
-  margin: 0 0 12px 0;
+  margin: 0 0 18px 0;
 `;
 
 export const InputSection = styled.div`
@@ -36,19 +40,31 @@ export const Label = styled.label`
 
 export const AuthInput = styled.input`
   width: 100%;
-  padding: 15px 13px 14px 13px;
+  padding: 15px 14px;
   box-sizing: border-box;
-  background-color: ${({ theme }) => theme.colors.grayScale["11"]};
-  border: 1px solid ${({ theme }) => theme.colors.secondary["07"]};
-  border-radius: 12px;
+  background-color: ${({ theme }) => theme.colors.grayScale["10"]};
+  border: 1px solid ${({ theme }) => theme.colors.grayScale["08"]};
+  border-radius: ${({ theme }) => theme.radius.md};
   ${({ theme }) => theme.typography.body.S1};
   line-height: 20px;
   color: ${({ theme }) => theme.colors.grayScale["00"]};
+  transition: ${({ theme }) => theme.transitions.fast};
 
   &::placeholder {
     ${({ theme }) => theme.typography.body.S1};
     line-height: 20px;
     color: ${({ theme }) => theme.colors.grayScale["05"]};
+  }
+
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.grayScale["07"]};
+  }
+
+  &:focus {
+    outline: none;
+    background-color: ${({ theme }) => theme.colors.grayScale["11"]};
+    border-color: ${({ theme }) => theme.colors.primary["00"]};
+    box-shadow: ${({ theme }) => theme.shadows.focus};
   }
 `;
 
@@ -66,16 +82,22 @@ export const EmailInputRow = styled.div`
 export const OpenModalButton = styled.button.attrs({ type: "button" })`
   min-width: 89px;
   padding: 8px 6.5px;
+  align-self: stretch;
   display: flex;
   justify-content: center;
   align-items: center;
   border: none;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.radius.sm};
   background-color: ${({ theme }) => theme.colors.secondary["08"]};
   color: ${({ theme }) => theme.colors.secondary["05"]};
   ${({ theme }) => theme.typography.body.XS2};
   cursor: pointer;
   flex-shrink: 0;
+  transition: ${({ theme }) => theme.transitions.fast};
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.secondary["07"]};
+  }
 `;
 
 export const VerifyCodeFieldWrapper = styled(FieldWrapper)`
@@ -116,16 +138,27 @@ export const SubmitButtonWrapper = styled.div`
 export const AuthPrimaryButton = styled.button`
   width: 100%;
   display: flex;
-  padding: 11px;
+  padding: 15px;
   justify-content: center;
   align-items: center;
   border: none;
-  border-radius: 8px;
+  border-radius: ${({ theme }) => theme.radius.md};
   background-color: ${({ theme }) => theme.colors.primary["00"]};
   color: ${({ theme }) => theme.colors.grayScale["11"]};
   ${({ theme }) => theme.typography.body.M2};
   cursor: pointer;
   box-sizing: border-box;
+  transition: ${({ theme }) => theme.transitions.fast};
+  box-shadow: 0 4px 14px -4px rgba(90, 92, 245, 0.5);
+
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.primaryScale["600"]};
+  }
+
+  &:active {
+    background-color: ${({ theme }) => theme.colors.primaryScale["700"]};
+    transform: translateY(1px);
+  }
 `;
 
 export const AuthUnderBarButton = styled.button`

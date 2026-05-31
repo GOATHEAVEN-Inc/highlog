@@ -1,4 +1,4 @@
-import { apiClient, ApiErrorException, BASE_URL } from "@/api/client";
+import { apiClient, ApiErrorException, resolveBaseUrl } from "@/api/client";
 import { tokenStorage } from "@/lib/tokenStorage";
 import type {
   CreateRecordRequest,
@@ -37,7 +37,7 @@ export async function registerRecordAndStream(
   onProgress?: (progress: number) => void,
 ): Promise<void> {
   const accessToken = tokenStorage.getAccessToken();
-  const response = await fetch(`${BASE_URL}/ai/records`, {
+  const response = await fetch(`${resolveBaseUrl("/ai/records")}/ai/records`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -96,7 +96,6 @@ export async function registerRecordAndStream(
               continue;
             }
             const event = JSON.parse(json) as RegisterRecordSSEEvent;
-            console.log("[SSE Event]", event);
             if (typeof event.progress === "number") {
               onProgress?.(event.progress);
             }
@@ -135,7 +134,6 @@ export async function registerRecordAndStream(
               const json = trimmed.slice(5).trim();
               if (json) {
                 const event = JSON.parse(json) as RegisterRecordSSEEvent;
-                console.log("[SSE Final Event]", event);
                 if (typeof event.progress === "number") {
                   onProgress?.(event.progress);
                 }

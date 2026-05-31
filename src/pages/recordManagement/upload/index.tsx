@@ -5,7 +5,7 @@ import Title from "@/components/title/Title";
 import FileUpload from "@/features/recordManagement/FileUpload";
 import { useFileUpload } from "@/hooks/useFileUpload";
 import * as S from "@/pages/recordManagement/upload/RecordUpload.styles";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecordUpload } from "@/api/record/useRecordUploadApi";
 import { parseApiError } from "@/api/client";
@@ -50,10 +50,6 @@ export default function RecordUpload() {
       setSubmitError(parseApiError(err).message);
     }
   };
-
-  useEffect(() => {
-    console.log(vectorizeProgress);
-  }, [vectorizeProgress]);
 
   return (
     <S.RecordUploadContainer>

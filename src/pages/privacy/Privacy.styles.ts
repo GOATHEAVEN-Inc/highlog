@@ -1,18 +1,23 @@
 import styled from "styled-components";
+import { headerAlignedPadding } from "@/styles/layout";
 
 export const PrivacyContainer = styled.div`
     display: flex;
     justify-content: center;
     width: 100%;
-    padding-top: 91px;
+    box-sizing: border-box;
+    padding-top: 64px;
     padding-bottom: 91px;
     background-color: ${({theme}) => theme.colors.grayScale["10"]};
+    ${headerAlignedPadding}
 `;
 
 export const PrivacyWrapper = styled.div`
     display: flex;
-    width: 1200px;
-    padding: 40px 100px;
+    width: 100%;
+    max-width: 1200px;
+    box-sizing: border-box;
+    padding: clamp(28px, 4vw, 40px) clamp(20px, 6vw, 100px);
     flex-direction: column;
     align-items: center;
     gap: 40px;

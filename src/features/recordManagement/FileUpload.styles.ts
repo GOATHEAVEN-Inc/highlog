@@ -56,9 +56,10 @@ export const FileUploadContainer = styled.div<{
   $status: "idle" | "uploading" | "completed" | "disabled";
 }>`
   display: flex;
-  width: 1056px;
-  height: 290px;
-  padding: 60px 372px;
+  width: 100%;
+  min-height: 290px;
+  padding: 60px 24px;
+  box-sizing: border-box;
   flex-direction: column;
   justify-content: center;
   align-items: center;

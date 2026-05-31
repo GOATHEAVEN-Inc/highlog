@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { DefaultButton } from "@/components/button/Button";
 import * as S from "@/features/myPage/MyPageAccount.styles";
 import { useMyPageAccountInfo } from "@/api/myPage/useMyPageAccountInfo";
@@ -14,26 +14,61 @@ export default function MyPageAccount({
   onNavigateToPasswordChange,
 }: MyPageAccountProps) {
   const { data, isLoading } = useMyPageAccountInfo();
+
+  if (isLoading || !data) {
+    return (
+      <MyPageAccountForm
+        key="loading"
+        initialName=""
+        email=""
+        isLoading
+        onNavigateToPasswordChange={onNavigateToPasswordChange}
+      />
+    );
+  }
+
+  return (
+    <MyPageAccountForm
+      key={`${data.userName}-${data.email}`}
+      initialName={data.userName ?? ""}
+      email={data.email ?? ""}
+      isLoading={false}
+      onNavigateToPasswordChange={onNavigateToPasswordChange}
+    />
+  );
+}
+
+interface MyPageAccountFormProps {
+  initialName: string;
+  email: string;
+  isLoading: boolean;
+  onNavigateToPasswordChange: () => void;
+}
+
+function MyPageAccountForm({
+  initialName,
+  email,
+  isLoading,
+  onNavigateToPasswordChange,
+}: MyPageAccountFormProps) {
   const { mutateAsync: submitNameChange, isPending } = useChangeName();
+  const [name, setName] = useState(initialName);
 
-  const [name, setName] = useState("");
-
-  useEffect(() => {
-    if (data?.userName !== undefined) {
-      setName(data.userName);
-    }
-  }, [data?.userName]);
-
-  const displayName = isLoading ? "…" : data?.userName ? `${data.userName} 님` : "-";
-  const fieldsKey = data ? `${data.userName}-${data.email}` : "loading";
+  const displayName = isLoading
+    ? "…"
+    : initialName
+    ? `${initialName} 님`
+    : "-";
 
   const handleSaveName = async () => {
     const trimmed = name.trim();
     if (!trimmed || trimmed.length > MAX_NAME_LENGTH) return;
-    if (trimmed === (data?.userName ?? "")) return;
+    if (trimmed === initialName) return;
     try {
       await submitNameChange({ newName: trimmed });
-    } catch {}
+    } catch {
+      // 에러는 useChangeName의 onError에서 처리
+    }
   };
 
   return (
@@ -44,7 +79,6 @@ export default function MyPageAccount({
           <S.AccountField>
             <S.AccountFieldLabel htmlFor="account-name">이름</S.AccountFieldLabel>
             <S.AccountFieldInput
-              key={`name-${fieldsKey}`}
               id="account-name"
               type="text"
               placeholder="이름을 입력해주세요"
@@ -58,12 +92,11 @@ export default function MyPageAccount({
           <S.AccountField>
             <S.AccountFieldLabel htmlFor="account-email">이메일</S.AccountFieldLabel>
             <S.AccountEmailInput
-              key={`email-${fieldsKey}`}
               id="account-email"
               type="email"
               readOnly
               autoComplete="email"
-              defaultValue={data?.email ?? ""}
+              defaultValue={email}
             />
           </S.AccountField>
         </S.AccountFieldRow>
